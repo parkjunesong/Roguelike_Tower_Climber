@@ -49,7 +49,7 @@ public class EffectProcessor : MonoBehaviour
 
             ExecuteSingleEffect(context, binding);
 
-            yield return new WaitForEndOfFrame();
+            yield return null;
         }
 
         isProcessing = false;

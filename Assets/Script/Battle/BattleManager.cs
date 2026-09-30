@@ -14,7 +14,26 @@ public class BattleManager : MonoBehaviour
 
     public void BattleStart()
     {
-        UnitSpawner.Instance.Spawn(battleData.Player);
+        if (battleData == null || battleData.Players == null || battleData.Players.Count != 3)
+        {
+            Debug.LogError("Assign exactly three player UnitData entries to BattleData.Players.", this);
+            return;
+        }
+
+        for (int i = 0; i < battleData.Players.Count; i++)
+        {
+            UnitData player = battleData.Players[i];
+            if (player == null || player.IsEnemy)
+            {
+                Debug.LogError($"Assign a player UnitData to party slot {i + 1}.", this);
+                return;
+            }
+        }
+
+        foreach (UnitData player in battleData.Players)
+        {
+            UnitSpawner.Instance.Spawn(player);
+        }
         SpawnCurrentWave();
         TurnManager.Instance.AdvanceTurn();
     }

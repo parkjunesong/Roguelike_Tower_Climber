@@ -13,7 +13,7 @@ public class WaveData
 [CreateAssetMenu(menuName = "Game/Data/Battle")]
 public class BattleData : ScriptableObject
 {
-    public UnitData Player;
+    public List<UnitData> Players = new List<UnitData>();
     public List<WaveData> Waves = new List<WaveData>();
 
     public int WaveCount => Waves.Count;

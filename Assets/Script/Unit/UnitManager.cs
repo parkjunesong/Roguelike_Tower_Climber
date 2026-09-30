@@ -1,12 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+
 public class UnitManager : MonoBehaviour
 {
     public static UnitManager Instance { get; private set; }
 
     private List<Unit> Units = new();
     private int nextUnitId;
+
+    [Header("Formation")]
+    [SerializeField, Min(0f)] private float groupSpacing = 2f;
+    [SerializeField, Min(0f)] private float unitSpacing = 0.75f;
 
     void Awake()
     {
@@ -22,77 +27,73 @@ public class UnitManager : MonoBehaviour
 
     public void Register(Unit unit)
     {
-        if (unit == null)
-            return;
-
-        if (Units.Contains(unit))
+        if (unit == null || Units.Contains(unit))
             return;
 
         unit.SetUnitId(nextUnitId++);
         Units.Add(unit);
-
         UpdateFormation();
     }
 
     public void Unregister(Unit unit)
     {
-        if (unit == null)
-            return;
-
-        if (Units.Remove(unit))
-        {
+        if (unit != null && Units.Remove(unit))
             UpdateFormation();
-        }
     }
 
     private void UpdateFormation()
     {
-        List<Unit> enemyUnits = Units.OfType<Enemy>().Cast<Unit>().ToList();
+        ArrangeSide(Units.Where(u => u != null && !u.Data.IsEnemy).ToList(), -1f);
+        ArrangeSide(Units.Where(u => u != null && u.Data.IsEnemy).ToList(), 1f);
+    }
 
-        int count = enemyUnits.Count;
-        if (count == 0) return;
-
-        float spacing = 5f;
-        float startX = -(count - 1) * spacing * 0.5f;
-
-        for (int i = 0; i < count; i++)
+    private void ArrangeSide(List<Unit> units, float direction)
+    {
+        float edge = transform.position.x + direction * groupSpacing * 0.5f;
+        foreach (var unit in units)
         {
-            Vector3 position = Vector3.zero;
-            position.x = startX + i * spacing;
-
-            enemyUnits[i].transform.position = position;
+            var renderer = unit.GetComponent<SpriteRenderer>();
+            float width = renderer != null && renderer.sprite != null ? renderer.bounds.size.x : 1f;
+            float centerOffset = renderer != null ? renderer.bounds.center.x - unit.transform.position.x : 0f;
+            unit.transform.position = new Vector3(edge + direction * width * 0.5f - centerOffset,
+                transform.position.y, transform.position.z);
+            edge += direction * (width + unitSpacing);
         }
     }
 
     public void OnTurnStart()
     {
-        foreach (var unit in Units.ToArray())
-        {
+        foreach (var unit in GetAllUnits())
             unit.OnTurnStart();
-        }
     }
 
     public void OnTurnEnd()
     {
-        foreach (var unit in Units.ToArray())
-        {
+        foreach (var unit in GetAllUnits())
             unit.OnTurnEnd();
-        }
     }
 
     public Unit GetUnit(int unitId)
     {
-        return Units.FirstOrDefault(unit => unit.UnitId == unitId);
+        return Units.FirstOrDefault(unit => IsAvailable(unit) && unit.UnitId == unitId);
     }
+
+    public bool IsAvailable(Unit unit)
+    {
+        return unit != null && unit.isActiveAndEnabled && unit.CurrentHP > 0 && Units.Contains(unit);
+    }
+
     public IReadOnlyList<Unit> GetAlliesOf(Unit source)
     {
-        // source가 Enemy면 모든 Enemy가 아군, 플레이어면 Enemy가 아닌 모든 유닛이 아군
-        return Units.Where(u => (u is Enemy) == source is Enemy).ToList();
+        return source == null ? new List<Unit>() :
+            Units.Where(u => IsAvailable(u) && u.Data.IsEnemy == source.Data.IsEnemy).ToList();
     }
+
     public IReadOnlyList<Unit> GetEnemiesOf(Unit source)
     {
-        // source가 Enemy면 Enemy가 아닌 유닛(플레이어)이 적, 플레이어면 모든 Enemy가 적
-        return Units.Where(u => (u is Enemy) != source is Enemy).ToList();
+        return source == null ? new List<Unit>() :
+            Units.Where(u => IsAvailable(u) && u.Data.IsEnemy != source.Data.IsEnemy).ToList();
     }
-    public IReadOnlyList<Unit> GetAllUnits() => Units;
+
+    public IReadOnlyList<Unit> GetAllUnits() => Units.Where(IsAvailable).ToList();
 }

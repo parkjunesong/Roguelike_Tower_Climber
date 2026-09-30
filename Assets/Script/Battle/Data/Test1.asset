@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e455a0a3b6f20a4bb323de0c79a2f74, type: 3}
   m_Name: Test1
   m_EditorClassIdentifier: Assembly-CSharp::BattleData
-  Player: {fileID: 11400000, guid: 34a8a91c9a74c2849a083dd5180fde96, type: 2}
+  Players:
+  - {fileID: 11400000, guid: 34a8a91c9a74c2849a083dd5180fde96, type: 2}
+  - {fileID: 11400000, guid: 34a8a91c9a74c2849a083dd5180fde96, type: 2}
+  - {fileID: 11400000, guid: 34a8a91c9a74c2849a083dd5180fde96, type: 2}
   Waves:
   - UnitData:
     - {fileID: 11400000, guid: 2921757445330c34da4090de71ba6312, type: 2}

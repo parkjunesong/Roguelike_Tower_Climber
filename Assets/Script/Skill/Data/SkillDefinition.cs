@@ -22,4 +22,28 @@ public class SkillDefinition : ScriptableObject
 
     // Core Data Properties
     public IReadOnlyList<EffectBinding> Effects => effects;
+
+    public bool RequiresSingleTarget => RequiresEnemyTarget || RequiresAllyTarget;
+    public bool RequiresEnemyTarget => HasTarget(EffectTarget.SingleEnemy);
+    public bool RequiresAllyTarget => HasTarget(EffectTarget.SingleAlly);
+
+    private bool HasTarget(EffectTarget target)
+    {
+        if (effects == null) return false;
+        foreach (var binding in effects)
+            if (binding != null && binding.EffectDefinition != null &&
+                binding.TriggerType == EffectTriggerType.OnUse && binding.Target == target)
+                return true;
+        return false;
+    }
+
+    public bool CanSelectTarget(Unit source, Unit target)
+    {
+        var manager = UnitManager.Instance;
+        if (manager == null || !manager.IsAvailable(source) || !manager.IsAvailable(target))
+            return false;
+
+        bool ally = source.Data.IsEnemy == target.Data.IsEnemy;
+        return RequiresSingleTarget && (!RequiresEnemyTarget || !ally) && (!RequiresAllyTarget || ally);
+    }
 }

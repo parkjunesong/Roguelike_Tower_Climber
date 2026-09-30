@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b4425876e5797bc48b36dbeda4456c1c, type: 3}
-  m_Name: test_damage
+  m_Name: test_damage_all_units
   m_EditorClassIdentifier: Assembly-CSharp::SkillDefinition
-  id: test
-  displayName: test
-  description: test
+  id: test_damage_all_units
+  displayName: "\uC804\uCCB4 \uD53C\uD574"
+  description: 'Temporary skill test: 1 damage'
   artwork: {fileID: 0}
   effects:
   - effectDefinition: {fileID: 11400000, guid: 2f5547f3371943648be0670af1bbbfea, type: 2}
-    target: 1
+    target: 4
     triggerType: 0
     value: 1
     multiplier: 1

@@ -12,11 +12,12 @@ public enum EffectTriggerType
 }
 public enum EffectTarget
 {
-    Self,        // ������ �ڽ�
-    Single,      // ������ ���� ���
-    AllAllies,   // ������ ���� ��� �Ʊ�
-    AllEnemies,  // ������ ���� ��� ����
-    AllUnits     // ��� ����
+    Self = 0,
+    SingleEnemy = 1,
+    SingleAlly = 5,
+    AllAllies = 2,
+    AllEnemies = 3,
+    AllUnits = 4
 }
 
 [Serializable]
@@ -24,7 +25,7 @@ public class EffectBinding
 {
     [Header("1. Basic Core")]
     [SerializeField] private EffectDefinition effectDefinition;
-    [SerializeField] private EffectTarget target = EffectTarget.Single;
+    [SerializeField] private EffectTarget target = EffectTarget.SingleEnemy;
     [SerializeField] private EffectTriggerType triggerType = EffectTriggerType.OnUse;
 
     [Header("2. Values")]

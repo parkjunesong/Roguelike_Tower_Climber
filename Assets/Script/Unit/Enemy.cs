@@ -36,13 +36,13 @@ public class Enemy : Unit
     public override void OnDamaged(int value)
     {
         base.OnDamaged(value);
-        HPBar.SetHP(CurrentHP);
+        HPBar?.SetHP(CurrentHP);
     }
 
     public override void OnHealed(int value)
     {
         base.OnHealed(value);
-        HPBar.SetHP(CurrentHP);
+        HPBar?.SetHP(CurrentHP);
     }
 
     private void Act()
