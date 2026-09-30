@@ -6,6 +6,10 @@ public class BattleSceneInitializer : MonoBehaviour
 
     void Start()
     {
+        var selectedBattleData = ScenarioBattleButton.ConsumeSelection();
+        if (selectedBattleData != null)
+            battleData = selectedBattleData;
+
         if (battleData == null)
             return;
 
