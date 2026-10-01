@@ -35,10 +35,18 @@ public class UnitSpawner : MonoBehaviour
 
         GameObject obj = Instantiate(prefab, transform);
 
+        if (data.Artwork != null)
+        {
+            if (!obj.TryGetComponent<Animator>(out var animator))
+                animator = obj.AddComponent<Animator>();
+
+            animator.runtimeAnimatorController = data.Artwork;
+            animator.Rebind();
+            animator.Update(0f);
+        }
+
         if (obj.TryGetComponent<SpriteRenderer>(out var spriteRenderer))
         {
-            if (data.Artwork != null)
-                spriteRenderer.sprite = data.Artwork;
             spriteRenderer.flipX = data.IsEnemy;
             AdjustBoxCollider(obj, spriteRenderer.sprite);
         }

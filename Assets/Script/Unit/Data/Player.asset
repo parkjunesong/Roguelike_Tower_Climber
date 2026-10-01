@@ -15,7 +15,7 @@ MonoBehaviour:
   isEnemy: 0
   displayName: Player
   description: Player
-  artwork: {fileID: 1102000145945595523, guid: b1d7bdd92e42e044bb7f67444d5138b4, type: 3}
+  artwork: {fileID: 9100000, guid: bd41047be69967948822bd5f86ec8cce, type: 2}
   baseStats:
   - type: 0
     value: 10
