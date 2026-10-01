@@ -5,6 +5,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 public class ScenarioBattleButton : MonoBehaviour
 {
+    [SerializeField] private ScenarioData scenarioData;
     [SerializeField] private BattleData battleData;
     [SerializeField] private string battleSceneName = "Battle";
     private bool loading;
@@ -38,6 +39,12 @@ public class ScenarioBattleButton : MonoBehaviour
     {
         if (loading)
             return;
+
+        if (scenarioData != null)
+        {
+            loading = ScenarioFlow.Begin(scenarioData);
+            return;
+        }
 
         if (battleData == null || !Application.CanStreamedLevelBeLoaded(battleSceneName))
         {

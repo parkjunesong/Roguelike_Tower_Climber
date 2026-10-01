@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e02a014fc459b7c4ab914decdcc2b014, type: 3}
+  m_Name: IntroDialogue
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueData
+  lines:
+  - speaker: "\uC548\uB0B4"
+    text: "\uD0D1\uC758 \uC785\uAD6C\uC5D0 \uB3C4\uCC29\uD588\uC2B5\uB2C8\uB2E4.
+      \uB2E4\uC74C \uB300\uC0AC\uB294 \uB300\uD654\uCC3D\uC744 \uD074\uB9AD\uD574\uC11C
+      \uC9C4\uD589\uD558\uC138\uC694."
+    background:
+      action: 2
+      sprite: {fileID: 0}
+    left:
+      action: 1
+      sprite: {fileID: 1503857747446927581, guid: 375b345d44b8a7c43bc42332ad9991c5, type: 3}
+    front:
+      action: 2
+      sprite: {fileID: 0}
+    right:
+      action: 2
+      sprite: {fileID: 0}
+    soundEffect: {fileID: 0}
+    charactersPerSecond: 30
+    autoDelay: 1.5
+    choices: []
+  - speaker: "\uAE30\uC0AC"
+    text: "\uC900\uBE44\uAC00 \uB418\uC5C8\uB2E4\uBA74 \uCCAB \uBC88\uC9F8 \uC804\uD22C\uB97C
+      \uC2DC\uC791\uD558\uACA0\uC2B5\uB2C8\uB2E4."
+    background:
+      action: 0
+      sprite: {fileID: 0}
+    left:
+      action: 0
+      sprite: {fileID: 0}
+    front:
+      action: 0
+      sprite: {fileID: 0}
+    right:
+      action: 0
+      sprite: {fileID: 0}
+    soundEffect: {fileID: 0}
+    charactersPerSecond: 30
+    autoDelay: 1.5
+    choices: []

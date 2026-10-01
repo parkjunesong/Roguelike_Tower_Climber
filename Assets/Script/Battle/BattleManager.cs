@@ -5,11 +5,23 @@ public class BattleManager : MonoBehaviour
     public int currentWave;
 
     private BattleData battleData;
+    private bool battleStarted;
+
+    private void Update()
+    {
+        var step = ScenarioFlow.CurrentStep;
+        if (!battleStarted || step == null || step.type != ScenarioStepType.Battle ||
+            UnitManager.Instance == null) return;
+        foreach (var unit in UnitManager.Instance.GetAllUnits())
+            if (unit.Data.IsEnemy) return;
+        NextWave();
+    }
 
     public void Init(BattleData data)
     {
         battleData = data;
         currentWave = 0;
+        battleStarted = false;
     }
 
     public void BattleStart()
@@ -35,6 +47,7 @@ public class BattleManager : MonoBehaviour
             UnitSpawner.Instance.Spawn(player);
         }
         SpawnCurrentWave();
+        battleStarted = currentWave < battleData.WaveCount;
         TurnManager.Instance.AdvanceTurn();
     }
 
@@ -63,5 +76,7 @@ public class BattleManager : MonoBehaviour
     private void BattleClear()
     {
         Debug.Log("Battle Clear");
+        battleStarted = false;
+        ScenarioFlow.CompleteStep(ScenarioStepType.Battle);
     }
 }

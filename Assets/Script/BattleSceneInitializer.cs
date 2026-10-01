@@ -7,6 +7,9 @@ public class BattleSceneInitializer : MonoBehaviour
     void Start()
     {
         var selectedBattleData = ScenarioBattleButton.ConsumeSelection();
+        var scenarioStep = ScenarioFlow.CurrentStep;
+        if (scenarioStep != null && scenarioStep.type == ScenarioStepType.Battle)
+            selectedBattleData = scenarioStep.battle;
         if (selectedBattleData != null)
             battleData = selectedBattleData;
 
