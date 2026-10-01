@@ -2,12 +2,13 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using TMPro;
 
 public class TalkSceneController : MonoBehaviour
 {
     [SerializeField] private DialogueData previewDialogue;
-    [SerializeField] private Text nameField;
-    [SerializeField] private Text talkField;
+    [SerializeField] private TMP_Text nameField;
+    [SerializeField] private TMP_Text talkField;
     [SerializeField] private Image background;
     [SerializeField] private Image left;
     [SerializeField] private Image front;
