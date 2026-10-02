@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 35d6e41588a07e045b7a361c6d37ec74, type: 3}
-  m_Name: SampleScenario
+  m_Name: SampleScenario2
   m_EditorClassIdentifier: Assembly-CSharp::ScenarioData
-  displayName: "\uB300\uD654 \uBC0F \uC804\uD22C \uC608\uC81C"
+  displayName: 
   dialogueSceneName: talk
   battleSceneName: Battle
   returnSceneName: main
   steps:
   - type: 0
-    dialogue: {fileID: 11400000, guid: f7f89f8814e0e8648a9c6f359334c6f6, type: 2}
+    dialogue: {fileID: 11400000, guid: bf72266e84189464abdccefbcab85914, type: 2}
     battle: {fileID: 0}
   - type: 1
-    dialogue: {fileID: 11400000, guid: acc6af2b3396c9d449c1e8995bac15b9, type: 2}
+    dialogue: {fileID: 0}
     battle: {fileID: 11400000, guid: 886afa4a1c9660247951d8a5d6cd8ba8, type: 2}
   - type: 0
-    dialogue: {fileID: 11400000, guid: 067d69dbf46db3247b447f5c03dad19c, type: 2}
+    dialogue: {fileID: 11400000, guid: aee694526d81e4041866428f277603ee, type: 2}
     battle: {fileID: 0}

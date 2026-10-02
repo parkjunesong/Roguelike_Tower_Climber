@@ -1,0 +1,112 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e02a014fc459b7c4ab914decdcc2b014, type: 3}
+  m_Name: IntroDialogue2
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueData
+  lines:
+  - speaker: "\uB124\uBE0C"
+    text: "\uADF8\uB798\uC11C \uB4F1\uBC18\uC790\uB2D8\uC740 \uD0D1\uC5D0 \uC65C
+      \uB4E4\uC5B4\uC624\uC2DC\uAC8C \uB41C\uAC70\uC5D0\uC694?"
+    background:
+      action: 1
+      sprite: {fileID: -8001407560079858681, guid: 3fcb73d83a0f2884a91558a2d071a96f, type: 3}
+    left:
+      action: 2
+      sprite: {fileID: 0}
+    front:
+      action: 2
+      sprite: {fileID: 0}
+    right:
+      action: 2
+      sprite: {fileID: 0}
+    soundEffect: {fileID: 0}
+    charactersPerSecond: 30
+    autoDelay: 1.5
+    choices: []
+  - speaker: "\uB4F1\uBC18\uC790"
+    text: " \uC800.. \uC0AC\uC2E4, \uD0D1\uC774 \uBB54\uC9C0 \uC804\uD600 \uBAA8\uB974\uACA0\uC5B4. "
+    background:
+      action: 0
+      sprite: {fileID: 0}
+    left:
+      action: 0
+      sprite: {fileID: 0}
+    front:
+      action: 0
+      sprite: {fileID: 0}
+    right:
+      action: 0
+      sprite: {fileID: 0}
+    soundEffect: {fileID: 0}
+    charactersPerSecond: 30
+    autoDelay: 1.5
+    choices: []
+  - speaker: "\uB4F1\uBC18\uC790"
+    text: "\uB0B4\uAC00 \uAE30\uC5B5\uD558\uB294\uAC74.. \uB09C \uB9C8\uC744\uC5D0\uC11C
+      \uB3D9\uC0DD\uACFC \uD568\uAED8 \uB180\uB2E4\uAC00 \uC815\uCCB4\uBD88\uBA85\uC758
+      \uBE5B\uC744 \uB300\uC2E0 \uB9DE\uACE0 \uC815\uC2E0\uC744 \uC783\uC5C8\uACE0,
+      \uAE68\uC5B4\uB098\uB2C8\uAE4C \uC9C0\uAE08 \uC5EC\uAE30\uB77C\uB294\uAC70\uC57C."
+    background:
+      action: 0
+      sprite: {fileID: 0}
+    left:
+      action: 0
+      sprite: {fileID: 0}
+    front:
+      action: 0
+      sprite: {fileID: 0}
+    right:
+      action: 0
+      sprite: {fileID: 0}
+    soundEffect: {fileID: 0}
+    charactersPerSecond: 30
+    autoDelay: 1.5
+    choices: []
+  - speaker: "\uB4F1\uBC18\uC790"
+    text: "\uB0B4\uAC00 \uC0B4\uB358 \uB9C8\uC744\uC740 \uC774\uB7F0 \uB3D9\uAD74\uAC19\uC740
+      \uACF3\uC774 \uC544\uB2C8\uC600\uC5B4. \uD574\uB3C4 \uB728\uACE0, \uD558\uB298\uB3C4
+      \uBCF4\uC774\uB294.. \uADF8\uB7F0 \uACF3\uC774\uC600\uC5B4. \uC5EC\uAE30\uB294
+      \uC5B4\uB518\uB370?"
+    background:
+      action: 0
+      sprite: {fileID: 0}
+    left:
+      action: 0
+      sprite: {fileID: 0}
+    front:
+      action: 0
+      sprite: {fileID: 0}
+    right:
+      action: 0
+      sprite: {fileID: 0}
+    soundEffect: {fileID: 0}
+    charactersPerSecond: 30
+    autoDelay: 1.5
+    choices: []
+  - speaker: "\uB124\uBE0C"
+    text: "\uBE5B\uC774\uC694?? \uC2B5\uACA9\uC774\uB77C\uB3C4 \uBC1B\uC73C\uC2E0\uAC74\uAC00.. "
+    background:
+      action: 0
+      sprite: {fileID: 0}
+    left:
+      action: 1
+      sprite: {fileID: 5918068991513046458, guid: e2dd371d7de24b24e8b86fe9b301ec66, type: 3}
+    front:
+      action: 0
+      sprite: {fileID: 0}
+    right:
+      action: 0
+      sprite: {fileID: 0}
+    soundEffect: {fileID: 0}
+    charactersPerSecond: 30
+    autoDelay: 1.5
+    choices: []

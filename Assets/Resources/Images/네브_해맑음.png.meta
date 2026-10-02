@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 4d45711a60991a94b82039b86d917374
+guid: a0c4f76f67941e645b7d03348a9bde55
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2885809423894848372
-    second: KakaoTalk_20261002_091744321_0
+      213: -7490076559027948267
+    second: "\uB124\uBE0C_\uD574\uB9D1\uC74C_0"
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: KakaoTalk_20261002_091744321_0
+      name: "\uB124\uBE0C_\uD574\uB9D1\uC74C_0"
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1671
-        height: 941
+        width: 249
+        height: 205
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4732ab0a1647c0820800000000000000
-      internalID: 2885809423894848372
+      spriteID: 515b8aebd07ed0890800000000000000
+      internalID: -7490076559027948267
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      KakaoTalk_20261002_091744321_0: 2885809423894848372
+      "\uB124\uBE0C_\uD574\uB9D1\uC74C_0": -7490076559027948267
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
