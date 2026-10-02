@@ -18,8 +18,8 @@ MonoBehaviour:
       \uB2E4\uC74C \uB300\uC0AC\uB294 \uB300\uD654\uCC3D\uC744 \uD074\uB9AD\uD574\uC11C
       \uC9C4\uD589\uD558\uC138\uC694."
     background:
-      action: 2
-      sprite: {fileID: 0}
+      action: 1
+      sprite: {fileID: -8479976470737159918, guid: 78689e766323c074e89f5e03814c6107, type: 3}
     left:
       action: 1
       sprite: {fileID: 1503857747446927581, guid: 375b345d44b8a7c43bc42332ad9991c5, type: 3}

@@ -48,7 +48,6 @@ public class UnitSpawner : MonoBehaviour
         if (obj.TryGetComponent<SpriteRenderer>(out var spriteRenderer))
         {
             spriteRenderer.flipX = data.IsEnemy;
-            AdjustBoxCollider(obj, spriteRenderer.sprite);
         }
 
         if (!obj.TryGetComponent<UnitClickable>(out _))
@@ -62,18 +61,5 @@ public class UnitSpawner : MonoBehaviour
         }
 
         return null;
-    }
-
-    private void AdjustBoxCollider(GameObject targetObj, Sprite sprite)
-    {
-        if (sprite == null) return;
-
-        if (!targetObj.TryGetComponent<BoxCollider2D>(out var collider))
-        {
-            collider = targetObj.AddComponent<BoxCollider2D>();
-        }
-
-        collider.size = sprite.bounds.size;
-        collider.offset = sprite.bounds.center;
-    }
+    }   
 }
