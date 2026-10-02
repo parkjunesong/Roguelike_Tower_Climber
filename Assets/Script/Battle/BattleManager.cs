@@ -6,15 +6,24 @@ public class BattleManager : MonoBehaviour
 
     private BattleData battleData;
     private bool battleStarted;
+    public bool IsFinished { get; private set; }
+    public bool IsVictory { get; private set; }
 
     private void Update()
     {
-        var step = ScenarioFlow.CurrentStep;
-        if (!battleStarted || step == null || step.type != ScenarioStepType.Battle ||
-            UnitManager.Instance == null) return;
+        if (!battleStarted || IsFinished || UnitManager.Instance == null ||
+            (EffectProcessor.Instance != null && EffectProcessor.Instance.IsProcessing)) return;
+
+        bool hasAllies = false;
+        bool hasEnemies = false;
         foreach (var unit in UnitManager.Instance.GetAllUnits())
-            if (unit.Data.IsEnemy) return;
-        NextWave();
+        {
+            if (unit.Data.IsEnemy) hasEnemies = true;
+            else hasAllies = true;
+        }
+
+        if (!hasAllies) BattleDefeat();
+        else if (!hasEnemies) NextWave();
     }
 
     public void Init(BattleData data)
@@ -22,10 +31,13 @@ public class BattleManager : MonoBehaviour
         battleData = data;
         currentWave = 0;
         battleStarted = false;
+        IsFinished = false;
+        IsVictory = false;
     }
 
     public void BattleStart()
     {
+        if (battleStarted || IsFinished) return;
         if (battleData == null || battleData.Players == null || battleData.Players.Count != 3)
         {
             Debug.LogError("Assign exactly three player UnitData entries to BattleData.Players.", this);
@@ -46,13 +58,14 @@ public class BattleManager : MonoBehaviour
         {
             UnitSpawner.Instance.Spawn(player);
         }
+        battleStarted = true;
         SpawnCurrentWave();
-        battleStarted = currentWave < battleData.WaveCount;
-        TurnManager.Instance.AdvanceTurn();
+        if (!IsFinished) TurnManager.Instance.AdvanceTurn();
     }
 
     public void NextWave()
     {
+        if (!battleStarted || IsFinished) return;
         currentWave++;
         SpawnCurrentWave();
     }
@@ -75,8 +88,20 @@ public class BattleManager : MonoBehaviour
     }
     private void BattleClear()
     {
+        if (IsFinished) return;
         Debug.Log("Battle Clear");
         battleStarted = false;
+        IsFinished = true;
+        IsVictory = true;
         ScenarioFlow.CompleteStep(ScenarioStepType.Battle);
+    }
+
+    private void BattleDefeat()
+    {
+        Debug.Log("Battle Defeat");
+        battleStarted = false;
+        IsFinished = true;
+        IsVictory = false;
+        ScenarioFlow.Cancel();
     }
 }

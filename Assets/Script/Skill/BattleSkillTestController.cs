@@ -24,9 +24,11 @@ public class BattleSkillTestController : MonoBehaviour
 
     private SkillDefinition pendingSkill;
     private Unit pendingCaster;
+    private BattleManager battleManager;
 
     private void Awake()
     {
+        battleManager = FindFirstObjectByType<BattleManager>();
         for (int i = 0; i < allyButtons.Length; i++)
         {
             int slot = i;
@@ -77,12 +79,19 @@ public class BattleSkillTestController : MonoBehaviour
                     $"{(ally == SelectedAlly ? "▶ " : "")}아군 {i + 1} · {ally.Data.DisplayName}\nHP {ally.CurrentHP}/{ally.MaxHP}";
         }
         foreach (var entry in skillButtons)
-            entry.button.interactable = SelectedAlly != null && entry.skill != null;
+            entry.button.interactable = SelectedAlly != null && entry.skill != null &&
+                (battleManager == null || !battleManager.IsFinished);
         cancelButton.interactable = IsTargeting;
 
         if (IsTargeting && ((Mouse.current != null && Mouse.current.rightButton.wasPressedThisFrame) ||
             (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)))
             CancelTargeting();
+
+        if (battleManager != null && battleManager.IsFinished)
+        {
+            if (IsTargeting) CancelTargeting();
+            SetStatus(battleManager.IsVictory ? "전투 승리" : "전투 패배");
+        }
     }
 
     private List<Unit> GetAllies()
@@ -106,6 +115,7 @@ public class BattleSkillTestController : MonoBehaviour
 
     public void UseSkill(SkillDefinition skill)
     {
+        if (battleManager != null && battleManager.IsFinished) return;
         if (skill == null || UnitManager.Instance == null || !UnitManager.Instance.IsAvailable(SelectedAlly))
         {
             SetStatus("사용할 아군과 스킬을 확인하세요.");

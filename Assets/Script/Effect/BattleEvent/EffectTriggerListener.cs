@@ -60,7 +60,11 @@ public class EffectTriggerListener : MonoBehaviour
 
     private void HandleCombatEvent(Unit source, Unit target, EffectTriggerType trigger)
     {
-        if (source != ownerUnit && target != ownerUnit) return;
+        if (trigger == EffectTriggerType.OnKill)
+        {
+            if (source != ownerUnit) return;
+        }
+        else if (target != ownerUnit) return;
 
         Unit selectedTarget = (source == ownerUnit) ? target : source;
         ProcessTrigger(trigger, selectedTarget);

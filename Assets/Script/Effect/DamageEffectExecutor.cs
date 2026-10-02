@@ -17,7 +17,7 @@ public class DamageEffectExecutor : IEffectExecutor
 
         foreach (Unit target in targets)
         {
-            target?.OnDamaged(binding.FinalValue);
+            if (target != null) target.OnDamaged(binding.FinalValue, context.SourceUnit);
         }
 
         return true;

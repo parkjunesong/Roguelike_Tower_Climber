@@ -1,10 +1,13 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 public class Unit : MonoBehaviour
 {
     public int UnitId { get; private set; }
     public int CurrentHP { get; private set; }
+    public bool IsDead { get; private set; }
+    private Unit lastDamageSource;
     public int MaxHP => Status != null ? Status.GetFinalStat(UnitStatType.HP) : 0;
     public float HPPercent => MaxHP > 0 ? (float)CurrentHP / MaxHP : 0f;
 
@@ -15,7 +18,8 @@ public class Unit : MonoBehaviour
 
     void OnDisable()
     {
-        UnitManager.Instance.Unregister(this);
+        if (UnitManager.Instance != null)
+            UnitManager.Instance.Unregister(this);
     }
 
     public virtual void Init(UnitData data)
@@ -29,31 +33,60 @@ public class Unit : MonoBehaviour
         TriggerListener.Init(this);
 
         CurrentHP = MaxHP;
+        IsDead = false;
+        lastDamageSource = null;
     }
 
     public virtual void OnTurnStart()
     {
         // StatusController?.OnTurnStart();
+        if (IsDead) return;
         EventManager.TriggerTurnEvent(unit: this, EffectTriggerType.OnTurnStart);
     }
     public virtual void OnTurnEnd()
     {
+        if (IsDead) return;
         EventManager.TriggerTurnEvent(unit: this, EffectTriggerType.OnTurnEnd);
     }
     public virtual void OnDeath()
     {
-        EventManager.TriggerCombatEvent(source: null, target: this, EffectTriggerType.OnDeath);
+        if (IsDead) return;
+        IsDead = true;
+        CurrentHP = 0;
+
+        EventManager.TriggerCombatEvent(source: lastDamageSource, target: this, EffectTriggerType.OnDeath);
+        if (lastDamageSource != null && lastDamageSource != this)
+            EventManager.TriggerCombatEvent(source: lastDamageSource, target: this, EffectTriggerType.OnKill);
+
+        if (TriggerListener != null) TriggerListener.enabled = false;
+        foreach (var animator in GetComponentsInChildren<Animator>(true)) animator.enabled = false;
+        foreach (var renderer in GetComponentsInChildren<Renderer>(true)) renderer.enabled = false;
+        foreach (var canvas in GetComponentsInChildren<Canvas>(true)) canvas.enabled = false;
+        foreach (var collider in GetComponentsInChildren<Collider2D>(true)) collider.enabled = false;
+        if (UnitManager.Instance != null) UnitManager.Instance.Unregister(this);
+        StartCoroutine(RemoveAfterEffects());
     }
 
-    public virtual void OnDamaged(int value)
+    private IEnumerator RemoveAfterEffects()
     {
+        // Keep the source available to queued OnDeath effects until the queue drains.
+        yield return null;
+        while (EffectProcessor.Instance != null && EffectProcessor.Instance.IsProcessing)
+            yield return null;
+        Destroy(gameObject);
+    }
+
+    public virtual void OnDamaged(int value, Unit source = null)
+    {
+        if (IsDead || value <= 0) return;
+        lastDamageSource = source;
         int bonusDamage = 0;
         int finalDamage = value + bonusDamage;
         CurrentHP = Mathf.Max(0, CurrentHP - finalDamage);
 
-        EventManager.TriggerCombatEvent(source: null, target: this, EffectTriggerType.OnAttacked);
+        EventManager.TriggerCombatEvent(source: source, target: this, EffectTriggerType.OnAttacked);
 
-        Debug.Log($"���� ü�� ����! �⺻:{value}, �߰�:{bonusDamage}, ����:{finalDamage}, ���� HP:{CurrentHP}");
+        Debug.Log($"HP:{CurrentHP}");
 
         if (CurrentHP <= 0)
         {
@@ -63,7 +96,8 @@ public class Unit : MonoBehaviour
 
     public virtual void OnHealed(int value)
     {
-        CurrentHP = Mathf.Min(CurrentHP + value, Status.GetFinalStat(UnitStatType.HP));
+        if (IsDead || value <= 0) return;
+        CurrentHP = Mathf.Min(CurrentHP + value, MaxHP);
     }
 
     public virtual List<EffectBinding> GetPassiveEffects()

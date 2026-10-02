@@ -19,6 +19,7 @@ public class Enemy : Unit
 
     public override void OnTurnStart()
     {
+        if (IsDead) return;
         base.OnTurnStart();
 
         actionCounter--;
@@ -33,9 +34,9 @@ public class Enemy : Unit
         //ACText.SetCounter(actionCounter);
     }
 
-    public override void OnDamaged(int value)
+    public override void OnDamaged(int value, Unit source = null)
     {
-        base.OnDamaged(value);
+        base.OnDamaged(value, source);
         HPBar?.SetHP(CurrentHP);
     }
 

@@ -33,7 +33,7 @@ public class EffectExecutionContext
     }
     private IReadOnlyList<Unit> ResolveSingleTarget(UnitManager manager, bool ally)
     {
-        if (SelectedTarget != null)
+        if (!ReferenceEquals(SelectedTarget, null))
         {
             return manager.IsAvailable(SelectedTarget) &&
                 (SourceUnit.Data.IsEnemy == SelectedTarget.Data.IsEnemy) == ally

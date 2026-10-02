@@ -9,6 +9,7 @@ public class EffectProcessor : MonoBehaviour
     private List<IEffectExecutor> executors = new();
     private Queue<(EffectExecutionContext context, EffectBinding binding)> effectQueue = new();
     private bool isProcessing = false;
+    public bool IsProcessing => isProcessing || effectQueue.Count > 0;
 
     private void Awake()
     {
@@ -56,6 +57,10 @@ public class EffectProcessor : MonoBehaviour
     }
     private void ExecuteSingleEffect(EffectExecutionContext context, EffectBinding binding)
     {
+        if (context == null || context.SourceUnit == null ||
+            (context.SourceUnit.IsDead && context.CurrentTrigger != EffectTriggerType.OnDeath))
+            return;
+
         if (!EffectEvaluator.CanExecute(context, binding))
         {
             return;
