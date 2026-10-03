@@ -28,6 +28,8 @@ public class DialogueLine
     public DialogueImage right = new();   
     public DialogueImage background = new();
     public DialogueBGM bgm = new();
+    [Min(0f)] public float blackoutDuration = 0f;
+    [Min(0f)] public float nextLineDelay = 0f;
 }
 
 [CreateAssetMenu(menuName = "Game/Data/Dialogue")]

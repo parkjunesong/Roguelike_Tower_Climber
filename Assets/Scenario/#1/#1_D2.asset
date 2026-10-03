@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e02a014fc459b7c4ab914decdcc2b014, type: 3}
-  m_Name: '#1_2'
+  m_Name: '#1_D2'
   m_EditorClassIdentifier: Assembly-CSharp::DialogueData
   lines:
   - speaker: "\uB124\uBE0C"
