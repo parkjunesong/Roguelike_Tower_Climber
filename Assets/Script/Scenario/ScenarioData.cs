@@ -16,8 +16,8 @@ public class ScenarioStep
 public class ScenarioData : ScriptableObject
 {
     public string displayName;
-    public string dialogueSceneName = "talk";
+    public string dialogueSceneName = "Talk";
     public string battleSceneName = "Battle";
-    public string returnSceneName = "main";
+    public string returnSceneName = "Main";
     public List<ScenarioStep> steps = new();
 }

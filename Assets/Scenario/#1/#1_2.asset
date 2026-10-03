@@ -10,27 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e02a014fc459b7c4ab914decdcc2b014, type: 3}
-  m_Name: OutroDialogue
+  m_Name: '#1_2'
   m_EditorClassIdentifier: Assembly-CSharp::DialogueData
   lines:
   - speaker: "\uB124\uBE0C"
     text: "\uC0DD\uAC01\uBCF4\uB2E4 \uC798 \uC2F8\uC6B0\uC2DC\uB294\uB370\uC694?"
-    background:
-      action: 1
-      sprite: {fileID: -8001407560079858681, guid: 3fcb73d83a0f2884a91558a2d071a96f, type: 3}
     left:
       action: 1
       sprite: {fileID: -7490076559027948267, guid: a0c4f76f67941e645b7d03348a9bde55, type: 3}
     front:
-      action: 2
+      action: 1
       sprite: {fileID: 0}
     right:
-      action: 2
+      action: 1
       sprite: {fileID: 0}
-    soundEffect: {fileID: 0}
-    charactersPerSecond: 30
-    autoDelay: 1.5
-    choices: []
+    background:
+      action: 1
+      sprite: {fileID: -8001407560079858681, guid: 3fcb73d83a0f2884a91558a2d071a96f, type: 3}
+    bgm:
+      action: 1
+      clip: {fileID: 0}
   - speaker: "\uB124\uBE0C"
     text: "\uD0D1\uC758 0\uCE35\uC778 \uAD11\uC7A5\uC740 \uC548\uC804\uC9C0\uB300\uAE34
       \uD558\uC9C0\uB9CC, \uC774\uB807\uAC8C \uC678\uACFD\uAE4C\uC9C0 \uB098\uC624\uBA74
@@ -38,94 +37,89 @@ MonoBehaviour:
       \uD558\uAC70\uB4E0\uC694!\n\uC5C4\uCCAD \uC57D\uD574\uC11C \uC5B4\uB9B0\uC544\uC774\uB3C4
       \uB54C\uB824\uC7A1\uC744 \uC218 \uC788\uB294 \uC218\uC900\uC774\uC9C0\uB9CC\u2026
       \uD5E4\uD5E4.. "
-    background:
-      action: 1
-      sprite: {fileID: -8001407560079858681, guid: 3fcb73d83a0f2884a91558a2d071a96f, type: 3}
     left:
       action: 0
       sprite: {fileID: 0}
     front:
-      action: 2
+      action: 0
       sprite: {fileID: 0}
     right:
-      action: 2
+      action: 0
       sprite: {fileID: 0}
-    soundEffect: {fileID: 0}
-    charactersPerSecond: 30
-    autoDelay: 1.5
-    choices: []
-  - speaker: "\uB4F1\uBC18\uC790"
+    background:
+      action: 0
+      sprite: {fileID: 0}
+    bgm:
+      action: 0
+      clip: {fileID: 0}
+  - speaker: 
     text: "(\uD0D1\uC758 0\uCE35?.. \uAD11\uC7A5..? \uADF8\uBCF4\uB2E4 \uB0B4 \uB3D9\uC0DD
       \uB124\uC544\uB294 \uC5B4\uB5BB\uAC8C \uB41C\uAC70\uC9C0..? \n\uAE30\uC5B5\uC774
       \uC798 \uC548\uB098..) "
-    background:
-      action: 1
-      sprite: {fileID: -8001407560079858681, guid: 3fcb73d83a0f2884a91558a2d071a96f, type: 3}
     left:
       action: 1
       sprite: {fileID: 0}
     front:
-      action: 2
+      action: 0
       sprite: {fileID: 0}
     right:
-      action: 2
+      action: 0
       sprite: {fileID: 0}
-    soundEffect: {fileID: 0}
-    charactersPerSecond: 30
-    autoDelay: 1.5
-    choices: []
-  - speaker: "\uB4F1\uBC18\uC790"
+    background:
+      action: 0
+      sprite: {fileID: 0}
+    bgm:
+      action: 0
+      clip: {fileID: 0}
+  - speaker: 
     text: "(\uC7A0\uAE50 \uC0DD\uAC01\uC744 \uC815\uB9AC\uD560 \uC2DC\uAC04\uC774
       \uD544\uC694\uD558\uACA0\uC5B4.)"
-    background:
-      action: 1
-      sprite: {fileID: -8001407560079858681, guid: 3fcb73d83a0f2884a91558a2d071a96f, type: 3}
     left:
-      action: 1
+      action: 0
       sprite: {fileID: 0}
     front:
-      action: 2
+      action: 0
       sprite: {fileID: 0}
     right:
-      action: 2
+      action: 0
       sprite: {fileID: 0}
-    soundEffect: {fileID: 0}
-    charactersPerSecond: 30
-    autoDelay: 1.5
-    choices: []
-  - speaker: "\uB4F1\uBC18\uC790"
+    background:
+      action: 0
+      sprite: {fileID: 0}
+    bgm:
+      action: 0
+      clip: {fileID: 0}
+  - speaker: 
     text: "\uC77C\uB2E8 \uAC78\uC5B4\uAC00\uBA74\uC11C \uC774\uC57C\uAE30\uD558\uC790."
-    background:
-      action: 1
-      sprite: {fileID: -8001407560079858681, guid: 3fcb73d83a0f2884a91558a2d071a96f, type: 3}
     left:
-      action: 1
+      action: 0
       sprite: {fileID: 0}
     front:
-      action: 2
+      action: 0
       sprite: {fileID: 0}
     right:
-      action: 2
+      action: 0
       sprite: {fileID: 0}
-    soundEffect: {fileID: 0}
-    charactersPerSecond: 30
-    autoDelay: 1.5
-    choices: []
+    background:
+      action: 0
+      sprite: {fileID: 0}
+    bgm:
+      action: 0
+      clip: {fileID: 0}
   - speaker: "\uB124\uBE0C"
     text: "\uB124! \uCC9C\uCC9C\uD788 \uB530\uB77C\uC640\uC8FC\uC138\uC694!"
-    background:
-      action: 1
-      sprite: {fileID: -8001407560079858681, guid: 3fcb73d83a0f2884a91558a2d071a96f, type: 3}
     left:
       action: 1
       sprite: {fileID: 6584943127184855505, guid: b737fb66e9ba89a48970192cc3c0ecb1, type: 3}
     front:
-      action: 2
+      action: 0
       sprite: {fileID: 0}
     right:
-      action: 2
+      action: 0
       sprite: {fileID: 0}
-    soundEffect: {fileID: 0}
-    charactersPerSecond: 30
-    autoDelay: 1.5
-    choices: []
+    background:
+      action: 0
+      sprite: {fileID: 0}
+    bgm:
+      action: 0
+      clip: {fileID: 0}

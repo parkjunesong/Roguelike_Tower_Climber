@@ -1,11 +1,13 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 using TMPro;
 
 public class TalkSceneController : MonoBehaviour
 {
+    private const float CharactersPerSecond = 30f;
+    private const float AutoDelay = 1.5f;
+
     [SerializeField] private DialogueData previewDialogue;
     [SerializeField] private TMP_Text nameField;
     [SerializeField] private TMP_Text talkField;
@@ -13,26 +15,21 @@ public class TalkSceneController : MonoBehaviour
     [SerializeField] private Image left;
     [SerializeField] private Image front;
     [SerializeField] private Image right;
-    [SerializeField] private AudioSource soundSource;
+    [SerializeField] private AudioSource bgmSource;
     [SerializeField] private Button advanceButton;
     [SerializeField] private Button autoButton;
-    [SerializeField] private Button menuButton;
-    public UnityEvent<DialogueLine> ChoiceRequested = new();
-    public UnityEvent<string> ChoiceSelected = new();
 
     private DialogueData dialogue;
     private int lineIndex = -1;
     private Coroutine presentation;
     private bool typing;
     private bool auto;
-    private bool waitingForChoice;
     private bool finished;
 
     private void Start()
     {
         advanceButton.onClick.AddListener(Advance);
         if (autoButton != null) autoButton.onClick.AddListener(ToggleAuto);
-        if (menuButton != null) menuButton.onClick.AddListener(ReturnToMain);
         var step = ScenarioFlow.CurrentStep;
         dialogue = step != null && step.type == ScenarioStepType.Dialogue
             ? step.dialogue : previewDialogue;
@@ -41,24 +38,32 @@ public class TalkSceneController : MonoBehaviour
             Debug.LogError("Assign a preview DialogueData or enter from a scenario.", this);
             return;
         }
+        if (bgmSource == null) bgmSource = GetComponent<AudioSource>();
+        bgmSource.Stop();
+        bgmSource.clip = null;
+        bgmSource.playOnAwake = false;
+        bgmSource.loop = true;
+        bgmSource.spatialBlend = 0f;
         Advance();
     }
 
     public void Advance()
     {
-        if (dialogue == null || finished || waitingForChoice) return;
+        if (dialogue == null || finished) return;
         if (presentation != null) StopCoroutine(presentation);
+        presentation = null;
         if (typing)
         {
             typing = false;
             talkField.text = dialogue.lines[lineIndex].text;
-            presentation = StartCoroutine(AfterLine(dialogue.lines[lineIndex]));
+            presentation = StartCoroutine(AfterLine());
             return;
         }
         lineIndex++;
         if (lineIndex >= dialogue.lines.Count)
         {
             finished = true;
+            if (bgmSource != null) bgmSource.Stop();
             ScenarioFlow.CompleteStep(ScenarioStepType.Dialogue);
             return;
         }
@@ -68,8 +73,7 @@ public class TalkSceneController : MonoBehaviour
         ApplyImage(left, line.left);
         ApplyImage(front, line.front);
         ApplyImage(right, line.right);
-        if (line.soundEffect != null && soundSource != null)
-            soundSource.PlayOneShot(line.soundEffect);
+        ApplyBgm(line.bgm);
         presentation = StartCoroutine(Present(line));
     }
 
@@ -78,35 +82,27 @@ public class TalkSceneController : MonoBehaviour
         string text = line.text ?? "";
         talkField.text = "";
         typing = true;
-        if (line.charactersPerSecond > 0)
+        for (int i = 1; i <= text.Length; i++)
         {
-            for (int i = 1; i <= text.Length; i++)
-            {
-                talkField.text = text.Substring(0, i);
-                yield return new WaitForSecondsRealtime(1f / line.charactersPerSecond);
-            }
+            talkField.text = text.Substring(0, i);
+            yield return new WaitForSecondsRealtime(1f / CharactersPerSecond);
         }
         talkField.text = text;
         typing = false;
-        yield return AfterLine(line);
+        yield return AfterLine();
     }
 
-    private IEnumerator AfterLine(DialogueLine line)
+    private IEnumerator AfterLine()
     {
-        if (line.choices != null && line.choices.Count > 0)
-        {
-            waitingForChoice = true;
-            ChoiceRequested.Invoke(line);
-            yield break;
-        }
         float elapsed = 0f;
         while (!finished)
         {
             if (auto)
             {
                 elapsed += Time.unscaledDeltaTime;
-                if (elapsed >= line.autoDelay)
+                if (elapsed >= AutoDelay)
                 {
+                    presentation = null;
                     Advance();
                     yield break;
                 }
@@ -114,17 +110,6 @@ public class TalkSceneController : MonoBehaviour
             else elapsed = 0f;
             yield return null;
         }
-    }
-
-    // Future choice UI can call this method with the selected option index.
-    public void SelectChoice(int index)
-    {
-        if (!waitingForChoice) return;
-        var choices = dialogue.lines[lineIndex].choices;
-        if (index < 0 || index >= choices.Count) return;
-        waitingForChoice = false;
-        ChoiceSelected.Invoke(choices[index].eventId);
-        Advance();
     }
 
     public void ToggleAuto() => auto = !auto;
@@ -136,15 +121,25 @@ public class TalkSceneController : MonoBehaviour
 
     private static void ApplyImage(Image image, DialogueImage data)
     {
-        if (image == null || data == null || data.action == DialogueImageAction.Keep) return;
-        image.sprite = data.action == DialogueImageAction.Set ? data.sprite : null;
+        if (image == null || data == null || data.action == DialogueAction.Keep) return;
+        image.sprite = data.action == DialogueAction.Set ? data.sprite : null;
         image.enabled = image.sprite != null;
+    }
+
+    private void ApplyBgm(DialogueBGM data)
+    {
+        if (bgmSource == null || data == null || data.action == DialogueAction.Keep) return;
+        if (bgmSource.clip == data.clip && bgmSource.isPlaying) return;
+
+        bgmSource.Stop();
+        bgmSource.clip = data.clip;
+        if (bgmSource.clip != null) bgmSource.Play();
     }
 
     private void OnDestroy()
     {
+        if (bgmSource != null) bgmSource.Stop();
         if (advanceButton != null) advanceButton.onClick.RemoveListener(Advance);
         if (autoButton != null) autoButton.onClick.RemoveListener(ToggleAuto);
-        if (menuButton != null) menuButton.onClick.RemoveListener(ReturnToMain);
     }
 }

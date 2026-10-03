@@ -18,28 +18,22 @@ SO를 사용하므로 Sprite, AudioClip, BattleData를 Inspector에서 직접 �
 ## 대화 연출
 
 - Lines에 화자와 대사를 순서대로 작성합니다.
-- Background / Left / Front / Right의 Action:
+- DialogueData의 Background는 대화 시작 시 한 번 적용합니다. 대사별 Left / Front / Right는 각 대사 시작 시 적용합니다.
+- 이미지의 Action:
   - Keep: 이전 이미지 유지
   - Set: 지정한 Sprite로 교체
   - Clear: 이미지 숨김
-- 첫 대사에서 필요한 이미지를 모두 지정하거나 Clear해서 씬의 초기 표시를 정합니다.
-- Sound Effect는 해당 대사 시작 시 한 번 재생합니다.
-- Characters Per Second가 0이면 즉시 표시합니다.
+- Data의 Background와 첫 대사의 캐릭터 이미지를 지정하거나 Clear해서 씬의 초기 표시를 정합니다. 대화 중 배경을 바꾸려면 별도의 DialogueData로 나눕니다.
+- Data의 Bgm에 AudioClip을 지정하면 대화 동안 반복 재생하고, 대화 종료 시 정지합니다. 비어 있으면 재생하지 않습니다.
+- 대사 표시 속도는 초당 30자로 고정됩니다.
 - 대화창 클릭: 표시 중이면 대사 전체 표시, 표시 완료 상태이면 다음 대사로 이동합니다.
-- AutoButton은 자동 진행을 켜고 끕니다. 대사 표시 완료 후 Auto Delay만큼 기다립니다.
+- AutoButton은 자동 진행을 켜고 끕니다. 대사 표시 완료 후 1.5초를 기다립니다. 표시 속도와 대기 시간은 TalkSceneController의 상수이므로 Inspector에서 변경할 수 없습니다.
 - MenuButton은 시나리오를 종료하고 지정된 복귀 씬으로 돌아갑니다.
 - talk 씬을 단독 실행하면 TalkSceneController의 Preview Dialogue가 재생됩니다.
-
-## 선택지: 추후 UI 구현용
-
-DialogueLine.Choices에 표시할 문구와 Event Id를 담을 수 있습니다.
-선택지가 있으면 진행을 멈추고 TalkSceneController.ChoiceRequested 이벤트를 발생시킵니다.
-향후 선택지 UI에서 SelectChoice(index)를 호출하면 ChoiceSelected(eventId)가 발생하고 다음 대사로 진행합니다.
-현재 선택지 UI와 분기 실행은 구현하지 않았으므로 실제 시나리오에서는 Choices를 비워 두세요.
 
 ## 변경된 연결
 
 talk 씬의 누락된 대화 컴포넌트를 TalkSceneController로 교체했습니다.
-대화창, 화자, 배경, 세 위치 일러스트, 효과음 AudioSource, 자동 및 메뉴 버튼을 연결했습니다.
+대화창, 화자, 배경, 세 위치 일러스트, BGM AudioSource, 자동 및 메뉴 버튼을 연결했습니다.
 EventSystem은 프로젝트 입력 설정에 맞는 InputSystemUIInputModule을 사용합니다.
 talk 씬을 Build Settings에 추가했습니다.
