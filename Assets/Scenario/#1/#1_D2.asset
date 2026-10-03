@@ -17,7 +17,7 @@ MonoBehaviour:
     text: "\uC0DD\uAC01\uBCF4\uB2E4 \uC798 \uC2F8\uC6B0\uC2DC\uB294\uB370\uC694?"
     left:
       action: 1
-      sprite: {fileID: -7490076559027948267, guid: a0c4f76f67941e645b7d03348a9bde55, type: 3}
+      sprite: {fileID: 0}
     front:
       action: 1
       sprite: {fileID: 0}
@@ -30,6 +30,8 @@ MonoBehaviour:
     bgm:
       action: 1
       clip: {fileID: 0}
+    blackoutDuration: 0
+    nextLineDelay: 0
   - speaker: "\uB124\uBE0C"
     text: "\uD0D1\uC758 0\uCE35\uC778 \uAD11\uC7A5\uC740 \uC548\uC804\uC9C0\uB300\uAE34
       \uD558\uC9C0\uB9CC, \uC774\uB807\uAC8C \uC678\uACFD\uAE4C\uC9C0 \uB098\uC624\uBA74
@@ -52,6 +54,8 @@ MonoBehaviour:
     bgm:
       action: 0
       clip: {fileID: 0}
+    blackoutDuration: 0
+    nextLineDelay: 0
   - speaker: 
     text: "(\uD0D1\uC758 0\uCE35?.. \uAD11\uC7A5..? \uADF8\uBCF4\uB2E4 \uB0B4 \uB3D9\uC0DD
       \uB124\uC544\uB294 \uC5B4\uB5BB\uAC8C \uB41C\uAC70\uC9C0..? \n\uAE30\uC5B5\uC774
@@ -71,6 +75,8 @@ MonoBehaviour:
     bgm:
       action: 0
       clip: {fileID: 0}
+    blackoutDuration: 0
+    nextLineDelay: 0
   - speaker: 
     text: "(\uC7A0\uAE50 \uC0DD\uAC01\uC744 \uC815\uB9AC\uD560 \uC2DC\uAC04\uC774
       \uD544\uC694\uD558\uACA0\uC5B4.)"
@@ -89,6 +95,8 @@ MonoBehaviour:
     bgm:
       action: 0
       clip: {fileID: 0}
+    blackoutDuration: 0
+    nextLineDelay: 0
   - speaker: 
     text: "\uC77C\uB2E8 \uAC78\uC5B4\uAC00\uBA74\uC11C \uC774\uC57C\uAE30\uD558\uC790."
     left:
@@ -106,6 +114,8 @@ MonoBehaviour:
     bgm:
       action: 0
       clip: {fileID: 0}
+    blackoutDuration: 0
+    nextLineDelay: 0
   - speaker: "\uB124\uBE0C"
     text: "\uB124! \uCC9C\uCC9C\uD788 \uB530\uB77C\uC640\uC8FC\uC138\uC694!"
     left:
@@ -123,3 +133,5 @@ MonoBehaviour:
     bgm:
       action: 0
       clip: {fileID: 0}
+    blackoutDuration: 0
+    nextLineDelay: 0

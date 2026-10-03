@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e02a014fc459b7c4ab914decdcc2b014, type: 3}
+  m_Name: '#2_D2'
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueData
+  lines:
+  - speaker: 
+    text: 
+    left:
+      action: 0
+      sprite: {fileID: 0}
+    front:
+      action: 0
+      sprite: {fileID: 0}
+    right:
+      action: 0
+      sprite: {fileID: 0}
+    background:
+      action: 0
+      sprite: {fileID: 0}
+    bgm:
+      action: 0
+      clip: {fileID: 0}
+    blackoutDuration: 0
+    nextLineDelay: 0

@@ -331,8 +331,8 @@ MonoBehaviour:
     blackoutDuration: 0
     nextLineDelay: 0
   - speaker: "\uB124\uBE0C "
-    text: "(\uB545 \uC18D\uC5D0\uC11C \uC62C\uB824\uC8FC\uB294 \uBB18\uC0AC) (\uB300\uCDA9
-      \uC138\uACC4\uAD00 \uC124\uBA85 \uD14D\uC2A4\uD2B8)"
+    text: "\uB4F1\uBC18\uC790\uB294 \uD0D1\uC5D0 \uB4E4\uC5B4\uC624\uC2E0 \uBD84\uB4E4\uC744
+      \uCE6D\uD558\uB294 \uC6A9\uC5B4\uC5D0\uC694!\n\uADF8\uB9AC\uACE0 \uD0D1\uC740..."
     left:
       action: 0
       sprite: {fileID: 0}
@@ -343,8 +343,8 @@ MonoBehaviour:
       action: 0
       sprite: {fileID: 0}
     background:
-      action: 1
-      sprite: {fileID: 2885086124618525500, guid: 1ae742bbb0cf6b04dbc77ecc0b8dd4e1, type: 3}
+      action: 0
+      sprite: {fileID: 0}
     bgm:
       action: 0
       clip: {fileID: 0}

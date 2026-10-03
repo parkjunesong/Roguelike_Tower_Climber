@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e455a0a3b6f20a4bb323de0c79a2f74, type: 3}
+  m_Name: '#2_B1'
+  m_EditorClassIdentifier: Assembly-CSharp::BattleData
+  Players:
+  - {fileID: 11400000, guid: 34a8a91c9a74c2849a083dd5180fde96, type: 2}
+  - {fileID: 11400000, guid: 34a8a91c9a74c2849a083dd5180fde96, type: 2}
+  - {fileID: 11400000, guid: 34a8a91c9a74c2849a083dd5180fde96, type: 2}
+  Waves:
+  - UnitData:
+    - {fileID: 11400000, guid: 2921757445330c34da4090de71ba6312, type: 2}
+    - {fileID: 11400000, guid: 2921757445330c34da4090de71ba6312, type: 2}
+    IsBossWave: 0
