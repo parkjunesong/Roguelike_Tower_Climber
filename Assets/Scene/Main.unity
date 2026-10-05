@@ -4363,7 +4363,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: accff81a4ff7ff24db8a6fa827c7f452, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScenarioBattleButton
-  scenarioData: {fileID: 0}
+  scenarioData: {fileID: 11400000, guid: 19c46744e6099a541b14f399118bfa1a, type: 2}
   battleData: {fileID: 11400000, guid: 886afa4a1c9660247951d8a5d6cd8ba8, type: 2}
   battleSceneName: Battle
 --- !u!1 &1436993960

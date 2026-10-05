@@ -4,6 +4,17 @@ using System.Collections.Generic;
 
 public class Unit : MonoBehaviour
 {
+    private UnitEquipment equipment;
+    public UnitEquipment Equipment
+    {
+        get
+        {
+            if (equipment == null)
+                equipment = GetComponent<UnitEquipment>() ?? gameObject.AddComponent<UnitEquipment>();
+            return equipment;
+        }
+    }
+
     public int UnitId { get; private set; }
     public int CurrentHP { get; private set; }
     public bool IsDead { get; private set; }

@@ -29,7 +29,9 @@ public static class ScenarioFlow
                 (step.type == ScenarioStepType.Dialogue && (step.dialogue == null ||
                     !Application.CanStreamedLevelBeLoaded(data.dialogueSceneName))) ||
                 (step.type == ScenarioStepType.Battle && (step.battle == null ||
-                    !Application.CanStreamedLevelBeLoaded(data.battleSceneName))))
+                    !Application.CanStreamedLevelBeLoaded(data.battleSceneName))) ||
+                (step.type == ScenarioStepType.Explore && (step.mapPrefab == null ||
+                    !Application.CanStreamedLevelBeLoaded(data.exploreSceneName))))
             {
                 Debug.LogError("Scenario steps require data and scenes included in build settings.", data);
                 return false;
@@ -63,7 +65,13 @@ public static class ScenarioFlow
             Cancel();
             return;
         }
-        SceneManager.LoadScene(CurrentStep.type == ScenarioStepType.Dialogue
-            ? Current.dialogueSceneName : Current.battleSceneName);
+        string scene = CurrentStep.type switch
+        {
+            ScenarioStepType.Dialogue => Current.dialogueSceneName,
+            ScenarioStepType.Battle => Current.battleSceneName,
+            ScenarioStepType.Explore => Current.exploreSceneName,
+            _ => null
+        };
+        SceneManager.LoadScene(scene);
     }
 }

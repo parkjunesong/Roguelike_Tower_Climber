@@ -9,7 +9,7 @@ public enum UnitStatType
     DF, // 방어력
     CR, // 치명타 확률
     CD, // 치명타 데미지
-    Count // 재행동 카운트
+    Count // 재행동 카운트, 비표시
 }
 
 [Serializable]
