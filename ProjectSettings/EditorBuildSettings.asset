@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Scene/Battle.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
-    path: Assets/Scene/Talk.unity
+    path: Assets/Scene/talk.unity
     guid: 6737d822255844c4e8d70b8bd258bd10
   - enabled: 1
     path: Assets/Scene/explore.unity
