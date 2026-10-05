@@ -20,6 +20,8 @@ public class ItemDefinition : ScriptableObject
     [Header("Interaction")]
     [SerializeField] private ItemActionType actionType;
     [SerializeField] private EquipmentType equipmentType;
+    [Tooltip("방어구는 모자, 상의, 하의, 신발 중 부위를 지정해야 합니다.")]
+    [SerializeField] private ArmorPart armorPart;
 
     [Header("Visual")]
     [SerializeField] private Sprite icon;
@@ -33,6 +35,7 @@ public class ItemDefinition : ScriptableObject
     public string Description => description;
     public ItemActionType ActionType => actionType;
     public EquipmentType EquipmentType => equipmentType;
+    public ArmorPart ArmorPart => armorPart;
     public Sprite Icon => icon;
     public Color Color => color;
     public IReadOnlyList<StatValue> StatBonuses => statBonuses;

@@ -33,15 +33,28 @@ namespace CaveParallaxDemo
         {
             if (player == null) return;
             if (fitWholeMap) return;
+            float blend = 1f - Mathf.Exp(-followSharpness * Time.deltaTime);
+            Vector3 position = transform.position;
+            position.x = Mathf.Lerp(position.x, GetFollowPositionX(), blend);
+            transform.position = position;
+        }
+
+        public void SnapToPlayer()
+        {
+            if (player == null) return;
+            Vector3 position = transform.position;
+            position.x = fitWholeMap ? (leftEdge + rightEdge) * 0.5f : GetFollowPositionX();
+            position.y = mapHeight * 0.5f;
+            transform.position = position;
+        }
+
+        private float GetFollowPositionX()
+        {
             float halfWidth = viewCamera.orthographicSize * viewCamera.aspect;
             float desired = player.position.x + halfWidth * (1f - 2f * playerScreenX);
             float minimum = leftEdge + halfWidth;
             float maximum = Mathf.Max(minimum, rightEdge - halfWidth);
-            desired = Mathf.Clamp(desired, minimum, maximum);
-            float blend = 1f - Mathf.Exp(-followSharpness * Time.deltaTime);
-            Vector3 position = transform.position;
-            position.x = Mathf.Lerp(position.x, desired, blend);
-            transform.position = position;
+            return Mathf.Clamp(desired, minimum, maximum);
         }
     }
 }

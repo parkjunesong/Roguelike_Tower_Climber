@@ -139,7 +139,10 @@ public class InventoryController : MonoBehaviour
             detailText.text = "선택한 아이템 없음\n\n좌클릭: 아이템 정보\n우클릭: 사용 / 장착 / 버리기";
             return;
         }
-        var text = new StringBuilder($"{SelectedItem.DisplayName}\n종류: {SelectedItem.ItemType}\n\n{SelectedItem.Description}\n\n제공 능력치");
+        var text = new StringBuilder($"{SelectedItem.DisplayName}\n종류: {SelectedItem.ItemType}");
+        if (SelectedItem.Definition.ActionType == ItemActionType.Equip)
+            text.Append($"\n장착 부위: {UnitEquipment.GetSlotName(UnitEquipment.GetSlotIndex(SelectedItem.Definition))}");
+        text.Append($"\n\n{SelectedItem.Description}\n\n제공 능력치");
         bool hasStats = false;
         foreach (UnitStatType type in Enum.GetValues(typeof(UnitStatType)))
         {

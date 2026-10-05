@@ -10,10 +10,19 @@ namespace CaveParallaxDemo
         public float minimumX = 1.7f;
         public float maximumX = 15f;
 
+        [SerializeField] private Animator animator;
+        [SerializeField] private SpriteRenderer spriteRenderer;
+
         private Rigidbody2D body;
         private float horizontal;
+        private static readonly int IsWalking = Animator.StringToHash("IsWalking");
 
-        private void Awake() => body = GetComponent<Rigidbody2D>();
+        private void Awake()
+        {
+            body = GetComponent<Rigidbody2D>();
+            if (animator == null) animator = GetComponentInChildren<Animator>();
+            if (spriteRenderer == null) spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        }
 
         private void Update()
         {
@@ -27,7 +36,17 @@ namespace CaveParallaxDemo
         {
             Vector2 next = body.position + Vector2.right * (horizontal * moveSpeed * Time.fixedDeltaTime);
             next.x = Mathf.Clamp(next.x, minimumX, maximumX);
+            float travel = next.x - body.position.x;
+            bool walking = Mathf.Abs(travel) > 0.0001f;
+            if (animator != null) animator.SetBool(IsWalking, walking);
+            if (walking && spriteRenderer != null) spriteRenderer.flipX = travel < 0f;
             body.MovePosition(next);
+        }
+
+        private void OnDisable()
+        {
+            horizontal = 0f;
+            if (animator != null) animator.SetBool(IsWalking, false);
         }
     }
 }

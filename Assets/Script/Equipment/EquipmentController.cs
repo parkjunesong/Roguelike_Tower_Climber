@@ -19,19 +19,39 @@ public class EquipmentController : MonoBehaviour
     [SerializeField] private RectTransform contextMenu;
     [SerializeField] private Button dismissButton;
     [SerializeField] private Button unequipButton;
+    [Header("Equip target selection")]
+    [SerializeField] private GameObject equipTargetOverlay;
+    [SerializeField] private Button[] equipTargetButtons;
+    [SerializeField] private TMP_Text equipTargetText;
+    [SerializeField] private Button cancelEquipTargetButton;
+    [SerializeField] private Button dismissEquipTargetButton;
 
     public Unit SelectedUnit { get; private set; }
     private UnitEquipment equipment;
     private int selectedSlot = -1;
     private int unitIndex;
+    private ItemInstance pendingItem;
+    public bool IsChoosingEquipTarget => equipTargetOverlay != null && equipTargetOverlay.activeSelf;
 
     private void Awake()
     {
-        for (int i = 0; i < slots.Length; i++) slots[i].Initialize(this, i);
+        for (int i = 0; i < slots.Length; i++)
+        {
+            slots[i].gameObject.SetActive(i < UnitEquipment.SlotCount);
+            if (i < UnitEquipment.SlotCount) slots[i].Initialize(this, i);
+        }
         previousButton.onClick.AddListener(PreviousUnit);
         nextButton.onClick.AddListener(NextUnit);
         dismissButton.onClick.AddListener(CloseContextMenu);
         unequipButton.onClick.AddListener(UnequipSelected);
+        for (int i = 0; i < equipTargetButtons.Length; i++)
+        {
+            int index = i;
+            equipTargetButtons[i].onClick.AddListener(() => ConfirmEquipTarget(index));
+        }
+        cancelEquipTargetButton.onClick.AddListener(CancelEquipTarget);
+        dismissEquipTargetButton.onClick.AddListener(CancelEquipTarget);
+        CancelEquipTarget();
         CloseContextMenu();
     }
 
@@ -60,13 +80,61 @@ public class EquipmentController : MonoBehaviour
         Refresh();
     }
 
+    public void SetUnits(Unit[] party)
+    {
+        units = party;
+        SelectUnit(units != null && units.Length > 0 ? units[0] : null);
+    }
+
     public void EquipItem(ItemInstance item)
     {
+        if (inventoryController.Inventory.IndexOf(item) < 0) return;
+        int slot = UnitEquipment.GetSlotIndex(item.Definition);
+        if (slot < 0)
+        {
+            inventoryController.SetStatus("아이템의 장비 종류와 방어구 부위를 설정하세요.");
+            return;
+        }
+        pendingItem = item;
+        equipTargetText.text = $"{item.DisplayName} · {UnitEquipment.GetSlotName(slot)}\n장착할 캐릭터를 선택하세요. 기존 장비는 인벤토리로 돌아갑니다.";
+        RefreshEquipTargets();
+        equipTargetOverlay.SetActive(true);
+    }
+
+    private void RefreshEquipTargets()
+    {
+        int slot = UnitEquipment.GetSlotIndex(pendingItem?.Definition);
+        for (int i = 0; i < equipTargetButtons.Length; i++)
+        {
+            var unit = units != null && i < units.Length ? units[i] : null;
+            var previous = unit != null && slot >= 0 ? unit.Equipment.GetItem(slot) : null;
+            equipTargetButtons[i].interactable = unit != null && !unit.IsDead && slot >= 0;
+            equipTargetButtons[i].GetComponentInChildren<TMP_Text>().text = unit == null ? "빈 파티 슬롯" :
+                $"{i + 1}. {unit.Data.DisplayName}{(unit.IsDead ? " · 전투 불능" : "")}\n현재 장비: {(previous == null ? "없음" : previous.DisplayName)}";
+        }
+    }
+
+    private void ConfirmEquipTarget(int index)
+    {
+        var item = pendingItem;
+        var unit = units != null && index >= 0 && index < units.Length ? units[index] : null;
+        CancelEquipTarget();
         string message;
-        if (SelectedUnit == null || SelectedUnit.IsDead) message = "장착할 유닛을 선택하세요.";
-        else equipment.TryEquip(item, inventoryController.Inventory, out message);
+        if (unit == null || unit.IsDead) message = "장착 가능한 캐릭터를 선택하세요.";
+        else if (inventoryController.Inventory.IndexOf(item) < 0) message = "아이템이 인벤토리에 없습니다.";
+        else
+        {
+            SelectUnit(unit);
+            equipment.TryEquip(item, inventoryController.Inventory, out message);
+        }
         statusText.text = message;
         inventoryController.SetStatus(message);
+    }
+
+    public void CancelEquipTarget()
+    {
+        pendingItem = null;
+        if (equipTargetOverlay != null) equipTargetOverlay.SetActive(false);
     }
 
     public void SelectSlot(int index)
@@ -126,11 +194,12 @@ public class EquipmentController : MonoBehaviour
         CloseContextMenu();
         unitText.text = SelectedUnit == null ? "선택한 유닛 없음" : SelectedUnit.Data != null ? SelectedUnit.Data.DisplayName : SelectedUnit.name;
         if (equipment == null || selectedSlot >= 0 && equipment.GetItem(selectedSlot) == null) selectedSlot = -1;
-        for (int i = 0; i < slots.Length; i++) slots[i].Show(equipment == null ? null : equipment.GetItem(i), i == selectedSlot);
+        for (int i = 0; i < Mathf.Min(slots.Length, UnitEquipment.SlotCount); i++)
+            slots[i].Show(equipment == null ? null : equipment.GetItem(i), i == selectedSlot);
         var item = selectedSlot < 0 ? null : equipment.GetItem(selectedSlot);
         if (item == null)
         {
-            detailText.text = "장비 좌클릭: 정보\n장비 우클릭: 장착 해제\n\n인벤토리에서 장착을 선택하면\n현재 유닛의 빈 슬롯으로 이동합니다.";
+            detailText.text = "장비 좌클릭: 정보\n장비 우클릭: 장착 해제\n\n인벤토리에서 장착 → 캐릭터 선택\n같은 부위의 장비는 교체됩니다.";
             return;
         }
         var text = new StringBuilder($"{item.DisplayName}\n종류: {item.ItemType}\n\n{item.Description}\n\n제공 능력치");
@@ -155,6 +224,11 @@ public class EquipmentController : MonoBehaviour
     private void Update()
     {
         if (SelectedUnit == null && equipment != null) SelectUnit(null);
+        if (IsChoosingEquipTarget)
+        {
+            RefreshEquipTargets();
+            if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame) CancelEquipTarget();
+        }
         if (contextOverlay.activeSelf)
         {
             unequipButton.interactable = inventoryController.Inventory.Count < inventoryController.Inventory.Capacity;
@@ -168,6 +242,7 @@ public class EquipmentController : MonoBehaviour
         UnitClickable.OnUnitClicked -= SelectUnit;
         if (equipment != null) equipment.Changed -= Refresh;
         CloseContextMenu();
+        CancelEquipTarget();
     }
 
     private void OnDestroy()
@@ -176,5 +251,7 @@ public class EquipmentController : MonoBehaviour
         nextButton.onClick.RemoveListener(NextUnit);
         dismissButton.onClick.RemoveListener(CloseContextMenu);
         unequipButton.onClick.RemoveListener(UnequipSelected);
+        cancelEquipTargetButton.onClick.RemoveListener(CancelEquipTarget);
+        dismissEquipTargetButton.onClick.RemoveListener(CancelEquipTarget);
     }
 }

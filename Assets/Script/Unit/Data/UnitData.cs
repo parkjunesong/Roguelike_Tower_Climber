@@ -12,6 +12,10 @@ public class UnitData : ScriptableObject
     [SerializeField] private string description;
     [SerializeField] private RuntimeAnimatorController artwork;
 
+    [Header("UI")]
+    [SerializeField] private Sprite portrait;
+    [SerializeField] private Sprite standingIllustration;
+
     [Header("Stats")]
     [SerializeField] public List<StatValue> baseStats;
 
@@ -22,6 +26,8 @@ public class UnitData : ScriptableObject
     public string DisplayName => displayName;
     public string Description => description;
     public RuntimeAnimatorController Artwork => artwork;
+    public Sprite Portrait => portrait;
+    public Sprite StandingIllustration => standingIllustration;
     public IReadOnlyList<StatValue> BaseStats => baseStats;
     //public IReadOnlyList<ItemDefinition> Items => items;
 }

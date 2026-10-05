@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Unit))]
 public class UnitEquipment : MonoBehaviour
 {
-    public const int SlotCount = 6;
+    public const int SlotCount = 5;
     private readonly ItemInstance[] slots = new ItemInstance[SlotCount];
     public event Action Changed;
 
@@ -14,32 +14,58 @@ public class UnitEquipment : MonoBehaviour
         return slots[index];
     }
 
+    public int GetStatBonus(UnitStatType type)
+    {
+        int bonus = 0;
+        foreach (var item in slots)
+            if (item != null) bonus += item.GetStatBonus(type);
+        return bonus;
+    }
+
+    private void NotifyChanged()
+    {
+        GetComponent<Unit>().OnEquipmentChanged();
+        Changed?.Invoke();
+    }
+
+    public static int GetSlotIndex(ItemDefinition definition)
+    {
+        if (definition == null || definition.ActionType != ItemActionType.Equip) return -1;
+        if (definition.EquipmentType == EquipmentType.Weapon) return 0;
+        if (definition.EquipmentType != EquipmentType.Armor) return -1;
+        return definition.ArmorPart switch
+        {
+            ArmorPart.Hat => 1, ArmorPart.Top => 2, ArmorPart.Bottom => 3, ArmorPart.Shoes => 4,
+            _ => -1
+        };
+    }
+
+    public static string GetSlotName(int index) => index switch
+    {
+        0 => "무기", 1 => "모자", 2 => "상의", 3 => "하의", 4 => "신발", _ => "부위 미지정"
+    };
+
     public bool TryEquip(ItemInstance item, InventoryGrid inventory, out string message)
     {
         int source = inventory == null ? -1 : inventory.IndexOf(item);
-        if (source < 0 || item.Definition.ActionType != ItemActionType.Equip || item.Definition.EquipmentType == EquipmentType.None)
+        int target = GetSlotIndex(item?.Definition);
+        if (source < 0 || target < 0)
         {
-            message = "인벤토리에 있는 장비를 선택하세요.";
+            message = "인벤토리에 있는 장비와 올바른 장착 부위를 확인하세요.";
             return false;
         }
-        bool weapon = item.Definition.EquipmentType == EquipmentType.Weapon;
-        int target = -1;
-        for (int i = weapon ? 0 : 1; i < (weapon ? 1 : SlotCount); i++)
-            if (slots[i] == null) { target = i; break; }
-        if (target < 0)
-        {
-            message = weapon ? "무기 슬롯이 가득 찼습니다." : "방어구 슬롯이 가득 찼습니다.";
-            return false;
-        }
+        var previous = slots[target];
         slots[target] = item;
-        if (!inventory.TryRemove(source))
+        bool moved = previous == null ? inventory.TryRemove(source) : inventory.TryReplace(source, previous);
+        if (!moved)
         {
-            slots[target] = null;
+            slots[target] = previous;
             message = "장비를 인벤토리에서 이동할 수 없습니다.";
             return false;
         }
-        Changed?.Invoke();
-        message = $"{item.DisplayName} 장착 완료";
+        NotifyChanged();
+        message = previous == null ? $"{item.DisplayName} 장착 완료" :
+            $"{GetSlotName(target)} 교체: {previous.DisplayName} → {item.DisplayName}";
         return true;
     }
 
@@ -63,7 +89,7 @@ public class UnitEquipment : MonoBehaviour
             message = "장비를 인벤토리로 이동할 수 없습니다.";
             return false;
         }
-        Changed?.Invoke();
+        NotifyChanged();
         message = $"{item.DisplayName} 장착 해제 완료";
         return true;
     }

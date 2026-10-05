@@ -4,3 +4,12 @@ public enum EquipmentType
     Weapon,
     Armor
 }
+
+public enum ArmorPart
+{
+    None,
+    Hat,
+    Top,
+    Bottom,
+    Shoes
+}

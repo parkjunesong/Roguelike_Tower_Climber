@@ -18,6 +18,7 @@ public class Unit : MonoBehaviour
     public int UnitId { get; private set; }
     public int CurrentHP { get; private set; }
     public bool IsDead { get; private set; }
+    public bool KeepAfterDeath { get; set; }
     private Unit lastDamageSource;
     public int MaxHP => Status != null ? Status.GetFinalStat(UnitStatType.HP) : 0;
     public float HPPercent => MaxHP > 0 ? (float)CurrentHP / MaxHP : 0f;
@@ -84,7 +85,8 @@ public class Unit : MonoBehaviour
         yield return null;
         while (EffectProcessor.Instance != null && EffectProcessor.Instance.IsProcessing)
             yield return null;
-        Destroy(gameObject);
+        if (KeepAfterDeath) gameObject.SetActive(false);
+        else Destroy(gameObject);
     }
 
     public virtual void OnDamaged(int value, Unit source = null)
@@ -109,6 +111,11 @@ public class Unit : MonoBehaviour
     {
         if (IsDead || value <= 0) return;
         CurrentHP = Mathf.Min(CurrentHP + value, MaxHP);
+    }
+
+    internal void OnEquipmentChanged()
+    {
+        CurrentHP = IsDead ? 0 : Mathf.Min(CurrentHP, MaxHP);
     }
 
     public virtual List<EffectBinding> GetPassiveEffects()

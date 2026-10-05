@@ -54,6 +54,16 @@ public class InventoryGrid
 
     public int IndexOf(ItemInstance item) => item == null ? -1 : Array.IndexOf(slots, item);
 
+    // 장착한 아이템이 있던 칸에 기존 장비를 돌려놓습니다. 용량은 변하지 않습니다.
+    public bool TryReplace(int index, ItemInstance replacement)
+    {
+        if (index < 0 || index >= Capacity || slots[index] == null ||
+            replacement == null || IndexOf(replacement) >= 0) return false;
+        slots[index] = replacement;
+        Changed?.Invoke();
+        return true;
+    }
+
     public void SortByType()
     {
         Array.Sort(slots, (a, b) =>

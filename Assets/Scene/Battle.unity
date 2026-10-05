@@ -2392,6 +2392,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UnitSpawner
   playerPrefab: {fileID: 2571928236879795941, guid: 983e18fece8001d47b12383fe8a82759, type: 3}
   enemyPrefab: {fileID: 2571928236879795941, guid: f3be858f43531a445a0e5d76b5f18ca4, type: 3}
+  visualScale: 1
+  sortingOrderOffset: 0
 --- !u!114 &1459959295
 MonoBehaviour:
   m_ObjectHideFlags: 0

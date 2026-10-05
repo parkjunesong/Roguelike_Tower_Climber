@@ -7,6 +7,8 @@ public class UnitSpawner : MonoBehaviour
     [Header("Prefabs")]
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject enemyPrefab;
+    [Min(0.01f)] public float visualScale = 1f;
+    public int sortingOrderOffset;
 
     void Awake()
     {
@@ -26,6 +28,14 @@ public class UnitSpawner : MonoBehaviour
         return SpawnInternal(data, targetPrefab);
     }
 
+    public void ConfigurePlayerVisual(Unit unit)
+    {
+        if (unit == null || unit.Data.IsEnemy || playerPrefab == null) return;
+        unit.transform.localScale = Vector3.Scale(playerPrefab.transform.localScale, new Vector3(visualScale, visualScale, 1f));
+        if (unit.TryGetComponent<SpriteRenderer>(out var renderer) && playerPrefab.TryGetComponent<SpriteRenderer>(out var prefabRenderer))
+            renderer.sortingOrder = prefabRenderer.sortingOrder + sortingOrderOffset;
+    }
+
     private Unit SpawnInternal(UnitData data, GameObject prefab)
     {
         if (prefab == null)
@@ -34,6 +44,7 @@ public class UnitSpawner : MonoBehaviour
         }
 
         GameObject obj = Instantiate(prefab, transform);
+        obj.transform.localScale = Vector3.Scale(obj.transform.localScale, new Vector3(visualScale, visualScale, 1f));
 
         if (data.Artwork != null)
         {
@@ -48,6 +59,7 @@ public class UnitSpawner : MonoBehaviour
         if (obj.TryGetComponent<SpriteRenderer>(out var spriteRenderer))
         {
             spriteRenderer.flipX = data.IsEnemy;
+            spriteRenderer.sortingOrder += sortingOrderOffset;
         }
 
         if (!obj.TryGetComponent<UnitClickable>(out _))

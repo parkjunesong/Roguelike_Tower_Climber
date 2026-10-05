@@ -9,6 +9,15 @@ public class UnitManager : MonoBehaviour
     private List<Unit> Units = new();
     private int nextUnitId;
     private readonly Dictionary<Unit, int> allySlots = new();
+    private Vector2 formationOrigin;
+    private float formationScale = 1f;
+
+    public void SetFormation(Vector2 origin, float scale)
+    {
+        formationOrigin = origin;
+        formationScale = scale;
+        UpdateFormation();
+    }
 
     void Awake()
     {
@@ -62,7 +71,7 @@ public class UnitManager : MonoBehaviour
         foreach (var ally in allies)
         {
             if (!allySlots.TryGetValue(ally, out int slot) || slot >= allyPositions.Length) continue;
-            var position = allyPositions[slot];
+            var position = formationOrigin + allyPositions[slot] * formationScale;
             ally.transform.position = new Vector3(position.x, position.y, ally.transform.position.z);
         }
 
@@ -103,7 +112,7 @@ public class UnitManager : MonoBehaviour
 
         for (int i = 0; i < enemies.Count; i++)
         {
-            var position = enemyPositions[i];
+            var position = formationOrigin + enemyPositions[i] * formationScale;
             enemies[i].transform.position = new Vector3(position.x, position.y, enemies[i].transform.position.z);
         }
     }

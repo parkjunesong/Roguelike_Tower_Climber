@@ -17,6 +17,7 @@ MonoBehaviour:
   description: "\uD14C\uC2A4\uD2B8 \uBAA8\uC790"
   actionType: 1
   equipmentType: 2
+  armorPart: 1
   icon: {fileID: -341073006434812329, guid: bb365ce9daf183c4b8a85fa380a40477, type: 3}
   color: {r: 1, g: 1, b: 1, a: 1}
   statBonuses:

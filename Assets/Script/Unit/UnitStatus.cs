@@ -22,6 +22,7 @@ public class StatValue
 public class UnitStatus : MonoBehaviour
 {    
     private Dictionary<UnitStatType, int> statDict;
+    private UnitEquipment equipment;
    
     public void Init(List<StatValue> stats)
     {
@@ -40,7 +41,8 @@ public class UnitStatus : MonoBehaviour
     public int GetFinalStat(UnitStatType type)
     {
         int value = GetBaseStat(type);
-
-        return value;
+        if (equipment == null) equipment = GetComponent<UnitEquipment>();
+        if (equipment != null) value += equipment.GetStatBonus(type);
+        return type == UnitStatType.HP ? Mathf.Max(1, value) : value;
     }
 }

@@ -11,7 +11,7 @@ public class ScenarioStep
     public ScenarioStepType type;
     public DialogueData dialogue;
     public BattleData battle;
-    public ExplorationMap mapPrefab;
+    public MapData mapData;
 }
 
 [CreateAssetMenu(menuName = "Game/Data/Scenario")]
