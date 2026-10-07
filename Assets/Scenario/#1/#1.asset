@@ -13,16 +13,19 @@ MonoBehaviour:
   m_Name: '#1'
   m_EditorClassIdentifier: Assembly-CSharp::ScenarioData
   displayName: "\uC2DC\uB098\uB9AC\uC624 1"
-  dialogueSceneName: Talk
   battleSceneName: Battle
+  exploreSceneName: explore
   returnSceneName: Main
   steps:
   - type: 0
     dialogue: {fileID: 11400000, guid: c768972f11203e9448dca7510f54dd5f, type: 2}
     battle: {fileID: 0}
+    mapData: {fileID: 0}
   - type: 1
     dialogue: {fileID: 0}
     battle: {fileID: 11400000, guid: 886afa4a1c9660247951d8a5d6cd8ba8, type: 2}
+    mapData: {fileID: 0}
   - type: 0
     dialogue: {fileID: 11400000, guid: 067d69dbf46db3247b447f5c03dad19c, type: 2}
     battle: {fileID: 0}
+    mapData: {fileID: 0}

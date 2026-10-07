@@ -9,7 +9,6 @@ public class TalkSceneController : MonoBehaviour
     private const float AutoDelay = 1.5f;
     private const float BackgroundFadeDuration = 0.4f;
 
-    [SerializeField] private DialogueData previewDialogue;
     [SerializeField] private TMP_Text nameField;
     [SerializeField] private TMP_Text talkField;
     [SerializeField] private Image background;
@@ -21,6 +20,7 @@ public class TalkSceneController : MonoBehaviour
     [SerializeField] private Button autoButton;
 
     private DialogueData dialogue;
+    private int dialogueVersion;
     private int lineIndex = -1;
     private Coroutine presentation;
     private bool typing;
@@ -30,25 +30,53 @@ public class TalkSceneController : MonoBehaviour
     private Image backgroundBlend;
     private Image blackout;
 
-    private void Start()
+    private void Awake()
     {
         advanceButton.onClick.AddListener(Advance);
         if (autoButton != null) autoButton.onClick.AddListener(ToggleAuto);
-        var step = ScenarioFlow.CurrentStep;
-        dialogue = step != null && step.type == ScenarioStepType.Dialogue
-            ? step.dialogue : previewDialogue;
-        if (dialogue == null)
-        {
-            Debug.LogError("Assign a preview DialogueData or enter from a scenario.", this);
-            return;
-        }
         if (bgmSource == null) bgmSource = GetComponent<AudioSource>();
         bgmSource.Stop();
         bgmSource.clip = null;
         bgmSource.playOnAwake = false;
         bgmSource.loop = true;
         bgmSource.spatialBlend = 0f;
+    }
+
+    public void BeginDialogue(DialogueData data)
+    {
+        dialogueVersion++;
+        StopAllCoroutines();
+        presentation = null;
+        dialogue = data;
+        lineIndex = -1;
+        typing = auto = finished = transitioning = false;
+        nameField.text = talkField.text = "";
+        foreach (var image in new[] { background, left, front, right })
+        {
+            if (image == null) continue;
+            image.sprite = null;
+            image.enabled = false;
+        }
+        if (background != null)
+        {
+            var color = background.color;
+            color.a = 1f;
+            background.color = color;
+        }
+        if (backgroundBlend != null) backgroundBlend.enabled = false;
+        if (blackout != null) blackout.enabled = false;
+        bgmSource.Stop();
+        bgmSource.clip = null;
         Advance();
+    }
+
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+        presentation = null;
+        if (bgmSource != null) bgmSource.Stop();
+        if (backgroundBlend != null) backgroundBlend.enabled = false;
+        if (blackout != null) blackout.enabled = false;
     }
 
     public void Advance()
@@ -63,7 +91,10 @@ public class TalkSceneController : MonoBehaviour
             presentation = StartCoroutine(AfterLine());
             return;
         }
-        presentation = StartCoroutine(ShowNextLine());
+        int version = dialogueVersion;
+        var next = StartCoroutine(ShowNextLine());
+        // Completing a line may open the next dialogue immediately in the same panel.
+        if (version == dialogueVersion && isActiveAndEnabled && !finished) presentation = next;
     }
 
     private IEnumerator ShowNextLine()

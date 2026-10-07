@@ -2,12 +2,14 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 namespace CaveParallaxDemo
 {
     public class ExplorationPartyHUD : MonoBehaviour
     {
         [SerializeField] private ExploreSceneController controller;
+        [SerializeField] private ExplorationItemDragAndDrop dragAndDrop;
         [SerializeField] private Button[] memberButtons;
         [SerializeField] private Image[] portraits;
         [SerializeField] private Image[] hpFills;
@@ -23,6 +25,9 @@ namespace CaveParallaxDemo
             {
                 int slot = i;
                 memberButtons[i].onClick.AddListener(() => OpenMember(slot));
+                var target = memberButtons[i].GetComponent<ExplorationEquipmentDropTarget>();
+                if (target == null) target = memberButtons[i].gameObject.AddComponent<ExplorationEquipmentDropTarget>();
+                target.Initialize(this, i);
             }
             Refresh();
         }
@@ -43,6 +48,11 @@ namespace CaveParallaxDemo
 
         private Unit GetUnit(int slot) => units != null && slot < units.Count ? units[slot] : null;
 
+        public void DropEquipment(int slot, PointerEventData data)
+        {
+            if (dragAndDrop != null) dragAndDrop.DropOnMember(GetUnit(slot), data);
+        }
+
         private void OnEnable() => Refresh();
 
         private void OpenMember(int slot)
@@ -58,7 +68,7 @@ namespace CaveParallaxDemo
             {
                 var unit = GetUnit(i);
                 memberButtons[i].interactable = unit != null && controller.CanOpenEquipment;
-                nameTexts[i].text = unit != null ? unit.Data.DisplayName : "빈 슬롯";
+                nameTexts[i].text = unit != null ? $"{unit.Data.DisplayName}\n{UnitClassNames.GetName(unit.Equipment.Class)}" : "빈 슬롯";
                 hpFills[i].fillAmount = unit != null ? unit.HPPercent : 0f;
                 hpFills[i].color = unit != null && !unit.IsDead ? new Color(0.22f, 0.72f, 0.4f) : Color.gray;
                 hpTexts[i].text = unit != null ? $"{unit.CurrentHP} / {unit.MaxHP}" : "—";

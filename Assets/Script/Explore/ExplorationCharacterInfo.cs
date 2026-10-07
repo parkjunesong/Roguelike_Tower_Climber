@@ -14,6 +14,7 @@ namespace CaveParallaxDemo
         private readonly int[] stats = new int[6];
         private int lastHP = -1;
         private bool lastDead;
+        private UnitClass lastClass;
 
         private void OnEnable() => Refresh(true);
         private void Update() => Refresh(false);
@@ -35,7 +36,7 @@ namespace CaveParallaxDemo
                 statsText.text = "선택한 캐릭터 없음";
                 return;
             }
-            bool changed = force || lastHP != unit.CurrentHP || lastDead != unit.IsDead;
+            bool changed = force || lastHP != unit.CurrentHP || lastDead != unit.IsDead || lastClass != unit.Equipment.Class;
             for (int i = 0; i < stats.Length; i++)
             {
                 int value = unit.Status.GetFinalStat((UnitStatType)i);
@@ -45,8 +46,10 @@ namespace CaveParallaxDemo
             if (!changed) return;
             lastHP = unit.CurrentHP;
             lastDead = unit.IsDead;
+            lastClass = unit.Equipment.Class;
             standingImage.color = unit.IsDead ? new Color(0.5f, 0.5f, 0.5f) : Color.white;
             var text = new StringBuilder();
+            text.AppendLine($"클래스   {UnitClassNames.GetName(lastClass)}");
             text.AppendLine(unit.IsDead ? "상태   전투 불능" : "상태   생존");
             text.AppendLine($"\n현재 체력   {unit.CurrentHP} / {stats[(int)UnitStatType.HP]}");
             text.AppendLine($"\n공격력   {stats[(int)UnitStatType.AT]}");

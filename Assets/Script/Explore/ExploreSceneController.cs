@@ -36,6 +36,7 @@ namespace CaveParallaxDemo
         private bool centerDisplayed;
         private bool exitOffered;
         private Rigidbody2D playerBody;
+        private PlayerParty explorationParty;
         public ExplorationMap CurrentMap { get; private set; }
         public MapData CurrentMapData { get; private set; }
         public ExplorationMapLayout Layout { get; private set; }
@@ -73,6 +74,7 @@ namespace CaveParallaxDemo
                 return;
             }
             CurrentMapData = selectedMap;
+            explorationParty = party;
             if (CurrentMapData == null || !CurrentMapData.Validate(out _))
             {
                 Debug.LogError("Assign a valid MapData in the scenario or scene preview.", this);
@@ -361,6 +363,9 @@ namespace CaveParallaxDemo
 
         private void OnDestroy()
         {
+            if (explorationParty != null)
+                foreach (var unit in explorationParty.Units)
+                    if (unit != null) unit.Equipment.ReleaseExplorationClass();
             if (finishButton != null) finishButton.onClick.RemoveListener(CompleteExploration);
             if (battleController != null) battleController.Finished -= OnBattleFinished;
             if (battleController != null) battleController.Started -= OnBattleStarted;

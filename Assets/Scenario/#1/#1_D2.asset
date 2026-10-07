@@ -119,8 +119,8 @@ MonoBehaviour:
   - speaker: "\uB124\uBE0C"
     text: "\uB124! \uCC9C\uCC9C\uD788 \uB530\uB77C\uC640\uC8FC\uC138\uC694!"
     left:
-      action: 1
-      sprite: {fileID: 6584943127184855505, guid: b737fb66e9ba89a48970192cc3c0ecb1, type: 3}
+      action: 0
+      sprite: {fileID: 0}
     front:
       action: 0
       sprite: {fileID: 0}

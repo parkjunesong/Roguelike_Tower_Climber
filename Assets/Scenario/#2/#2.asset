@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: '#2'
   m_EditorClassIdentifier: Assembly-CSharp::ScenarioData
   displayName: "\uC2DC\uB098\uB9AC\uC624 2"
-  dialogueSceneName: Talk
   battleSceneName: Battle
   exploreSceneName: explore
   returnSceneName: Main

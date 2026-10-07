@@ -294,8 +294,8 @@ MonoBehaviour:
       \uBABB \uBCF4\uB358 \uC5BC\uAD74\uC778\uB370, \uC0C8\uB85C \uD0D1\uC744 \uC624\uB974\uB7EC
       \uB4E4\uC5B4\uC624\uC2E0 \uB4F1\uBC18\uC790\uB2D8\uC774\uC2DC\uC8E0? "
     left:
-      action: 1
-      sprite: {fileID: -7369369102586540275, guid: daa196f238893b947b613f3592cc68b0, type: 3}
+      action: 0
+      sprite: {fileID: 0}
     front:
       action: 0
       sprite: {fileID: 0}
@@ -374,8 +374,8 @@ MonoBehaviour:
     text: "\uC5C7, \uB300\uD654\uB294 \uC7A0\uC2DC \uBBF8\uB904\uB458\uAE4C\uC694?
       \uC800\uAC83\uB4E4\uBD80\uD130 \uD574\uCE58\uC6B0\uACE0 \uC124\uBA85\uD574\uB4DC\uB9B4\uAC8C\uC694!"
     left:
-      action: 1
-      sprite: {fileID: 6584943127184855505, guid: b737fb66e9ba89a48970192cc3c0ecb1, type: 3}
+      action: 0
+      sprite: {fileID: 0}
     front:
       action: 0
       sprite: {fileID: 0}

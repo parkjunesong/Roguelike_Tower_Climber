@@ -37,12 +37,12 @@ public class ScenarioBattleButton : MonoBehaviour
 
     public void StartBattle()
     {
-        if (loading)
+        if (loading || ScenarioFlow.Current != null || ExplorationEntry.PendingMap != null)
             return;
 
         if (scenarioData != null)
         {
-            loading = ScenarioFlow.Begin(scenarioData);
+            ScenarioFlow.Begin(scenarioData);
             return;
         }
 

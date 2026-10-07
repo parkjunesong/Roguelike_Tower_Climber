@@ -11,3 +11,5 @@ Open Assets/Scene/invenTest.unity. The Inventory object owns InventoryController
 - InventoryGrid is the UI-independent N x M model. InventorySlotUI forwards left/right pointer clicks and renders existing scene/prefab controls. InventoryController coordinates inventory actions and scene UI.
 
 There are no automatic sample items, test buttons, runtime BuildUI, legacy InventoryItem, InventoryTestController, InventoryUI or TestInventoryItem. The existing testitem1/testitem2 SOs are retained for external AddItem calls. Inventory is not persisted between sessions.
+
+In explore.unity, ExplorationItemDragAndDrop replaces right-click menus with equipment dragging: drop onto a Party HUD card to equip; drag equipped gear outside the character information window to unequip. Left-click details and sorting remain available. Drops outside a valid inventory equipment target cancel without discarding items.

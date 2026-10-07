@@ -18,7 +18,8 @@ public static class ScenarioFlow
     public static bool Begin(ScenarioData data)
     {
         if (data == null || data.steps == null || data.steps.Count == 0 ||
-            !Application.CanStreamedLevelBeLoaded(data.returnSceneName))
+            !Application.CanStreamedLevelBeLoaded(data.returnSceneName) ||
+            !Application.CanStreamedLevelBeLoaded(MainSceneController.SceneName))
         {
             Debug.LogError("Assign a scenario with steps and a valid return scene.");
             return false;
@@ -26,13 +27,11 @@ public static class ScenarioFlow
         foreach (var step in data.steps)
         {
             if (step == null ||
-                (step.type == ScenarioStepType.Dialogue && (step.dialogue == null ||
-                    !Application.CanStreamedLevelBeLoaded(data.dialogueSceneName))) ||
+                (step.type == ScenarioStepType.Dialogue && step.dialogue == null) ||
                 (step.type == ScenarioStepType.Battle && (step.battle == null ||
                     !Application.CanStreamedLevelBeLoaded(data.battleSceneName))) ||
                 (step.type == ScenarioStepType.Explore && (step.mapData == null || !step.mapData.Validate(out _) ||
-                    !Application.CanStreamedLevelBeLoaded(data.exploreSceneName) ||
-                    !Application.CanStreamedLevelBeLoaded(ExplorationEntry.FormationSceneName))))
+                    !Application.CanStreamedLevelBeLoaded(data.exploreSceneName))))
             {
                 Debug.LogError("Scenario steps require data and scenes included in build settings.", data);
                 return false;
@@ -56,7 +55,9 @@ public static class ScenarioFlow
         if (Current == null) return;
         string scene = Current.returnSceneName;
         Reset();
-        SceneManager.LoadScene(scene);
+        ExplorationEntry.Reset();
+        if (scene == MainSceneController.SceneName) MainSceneController.ShowMain();
+        else SceneManager.LoadScene(scene);
     }
 
     private static void LoadStep()
@@ -71,12 +72,11 @@ public static class ScenarioFlow
             ExplorationEntry.Begin(CurrentStep.mapData, Current.exploreSceneName, Current.returnSceneName);
             return;
         }
-        string scene = CurrentStep.type switch
+        if (CurrentStep.type == ScenarioStepType.Dialogue)
         {
-            ScenarioStepType.Dialogue => Current.dialogueSceneName,
-            ScenarioStepType.Battle => Current.battleSceneName,
-            _ => null
-        };
-        SceneManager.LoadScene(scene);
+            MainSceneController.ShowMain();
+            return;
+        }
+        SceneManager.LoadScene(Current.battleSceneName);
     }
 }

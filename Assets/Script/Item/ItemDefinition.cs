@@ -20,6 +20,7 @@ public class ItemDefinition : ScriptableObject
     [Header("Interaction")]
     [SerializeField] private ItemActionType actionType;
     [SerializeField] private EquipmentType equipmentType;
+    [SerializeField] private WeaponType weaponType;
     [Tooltip("방어구는 모자, 상의, 하의, 신발 중 부위를 지정해야 합니다.")]
     [SerializeField] private ArmorPart armorPart;
 
@@ -35,6 +36,16 @@ public class ItemDefinition : ScriptableObject
     public string Description => description;
     public ItemActionType ActionType => actionType;
     public EquipmentType EquipmentType => equipmentType;
+    public WeaponType WeaponType => weaponType;
+    public UnitClass WeaponClass => equipmentType != EquipmentType.Weapon ? UnitClass.None : weaponType switch
+    {
+        WeaponType.Sword => UnitClass.Knight,
+        WeaponType.Bow => UnitClass.Archer,
+        WeaponType.Dagger => UnitClass.Assassin,
+        WeaponType.Staff => UnitClass.Caster,
+        WeaponType.Orb => UnitClass.Shaman,
+        _ => UnitClass.None
+    };
     public ArmorPart ArmorPart => armorPart;
     public Sprite Icon => icon;
     public Color Color => color;

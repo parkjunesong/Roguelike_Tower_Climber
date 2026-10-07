@@ -155,7 +155,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 780, y: -24}
+  m_AnchoredPosition: {x: 1040, y: -22}
   m_SizeDelta: {x: 190, y: 44}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &22791181
@@ -3914,9 +3914,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC88C\uD074\uB9AD: \uC815\uBCF4  |  \uC6B0\uD074\uB9AD: \uC0AC\uC6A9
-    / \uC7A5\uCC29 / \uBC84\uB9AC\uAE30  |  \uC885\uB958\uBCC4 \uC815\uB82C: \uAC19\uC740
-    \uC885\uB958\uB97C \uD568\uAED8 \uBCF4\uAD00"
+  m_text: "\uC88C\uD074\uB9AD: \uC815\uBCF4  |  \uC7A5\uBE44\uB97C \uCE90\uB9AD\uD130
+    \uCE74\uB4DC\uC5D0 \uB4DC\uB798\uADF8: \uC7A5\uCC29 / \uAD50\uCCB4  |  \uC885\uB958\uBCC4
+    \uC815\uB82C"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8e94cbefc2773174c8c622f6414e4550, type: 2}
   m_sharedMaterial: {fileID: -7027042972102692043, guid: 8e94cbefc2773174c8c622f6414e4550, type: 2}
@@ -4733,8 +4733,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC7A5\uBE44 \uC88C\uD074\uB9AD: \uC815\uBCF4\n\uC7A5\uBE44 \uC6B0\uD074\uB9AD:
-    \uC7A5\uCC29 \uD574\uC81C"
+  m_text: "\uC7A5\uBE44 \uC88C\uD074\uB9AD: \uC815\uBCF4\n\uC7A5\uBE44\uB97C \uCC3D
+    \uBC16\uC73C\uB85C \uB4DC\uB798\uADF8\uD558\uC5EC \uD574\uC81C"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8e94cbefc2773174c8c622f6414e4550, type: 2}
   m_sharedMaterial: {fileID: -7027042972102692043, guid: 8e94cbefc2773174c8c622f6414e4550, type: 2}
@@ -7933,6 +7933,10 @@ MonoBehaviour:
   inventoryController: {fileID: 655424496}
   items:
   - {fileID: 11400000, guid: dd56037caea2f7049a24890eb5cb49e4, type: 2}
+  - {fileID: 11400000, guid: f68b5455733ca524899a627d2fc059b3, type: 2}
+  - {fileID: 11400000, guid: cd272f3a9503bae46b483c7dd72305a8, type: 2}
+  - {fileID: 11400000, guid: 4257e6c4a9a5b6c42bc5835f375a6bcf, type: 2}
+  - {fileID: 11400000, guid: 2a11f1b882b2b324080998446c17e013, type: 2}
   - {fileID: 11400000, guid: d84ecd4cc64118343ad1547b3f27568f, type: 2}
 --- !u!1 &662378097
 GameObject:
@@ -17220,6 +17224,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CaveParallaxDemo.ExplorationPartyHUD
   controller: {fileID: 2082358242}
+  dragAndDrop: {fileID: 2082358244}
   memberButtons:
   - {fileID: 714329671}
   - {fileID: 363824656}
@@ -20253,8 +20258,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "\uC120\uD0DD\uD55C \uC544\uC774\uD15C \uC5C6\uC74C\n\n\uC88C\uD074\uB9AD:
-    \uC544\uC774\uD15C \uC815\uBCF4\n\uC6B0\uD074\uB9AD: \uC0AC\uC6A9 / \uC7A5\uCC29
-    / \uBC84\uB9AC\uAE30"
+    \uC544\uC774\uD15C \uC815\uBCF4\n\uC7A5\uBE44\uB97C \uCE90\uB9AD\uD130 \uCE74\uB4DC\uC5D0
+    \uB4DC\uB798\uADF8\uD558\uC5EC \uC7A5\uCC29"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8e94cbefc2773174c8c622f6414e4550, type: 2}
   m_sharedMaterial: {fileID: -7027042972102692043, guid: 8e94cbefc2773174c8c622f6414e4550, type: 2}
@@ -21871,6 +21876,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2082358243}
   - component: {fileID: 2082358242}
+  - component: {fileID: 2082358244}
   m_Layer: 0
   m_Name: Exploration
   m_TagString: Untagged
@@ -21922,6 +21928,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2082358244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2082358241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58e73495dabed814682c0da7004276d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CaveParallaxDemo.ExplorationItemDragAndDrop
+  exploration: {fileID: 2082358242}
+  inventory: {fileID: 655424496}
+  equipment: {fileID: 1808999714}
+  characterWindow: {fileID: 1123860650}
 --- !u!1 &2109503696
 GameObject:
   m_ObjectHideFlags: 0
@@ -22116,8 +22138,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC7A5\uBE44 \uC88C\uD074\uB9AD: \uC815\uBCF4 \xB7 \uC6B0\uD074\uB9AD:
-    \uC7A5\uCC29 \uD574\uC81C  |  I: \uC778\uBCA4\uD1A0\uB9AC \xB7 Esc: \uB2EB\uAE30"
+  m_text: "\uC7A5\uBE44 \uC88C\uD074\uB9AD: \uC815\uBCF4 \xB7 \uCC3D \uBC16\uC73C\uB85C
+    \uB4DC\uB798\uADF8: \uD574\uC81C  |  I: \uC778\uBCA4\uD1A0\uB9AC \xB7 Esc: \uB2EB\uAE30"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8e94cbefc2773174c8c622f6414e4550, type: 2}
   m_sharedMaterial: {fileID: -7027042972102692043, guid: 8e94cbefc2773174c8c622f6414e4550, type: 2}

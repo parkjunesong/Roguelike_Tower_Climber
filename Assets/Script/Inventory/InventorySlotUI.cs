@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InventorySlotUI : MonoBehaviour, IPointerDownHandler, IPointerClickHandler
+public class InventorySlotUI : MonoBehaviour, IPointerDownHandler, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     [SerializeField] private Image background;
     [SerializeField] private Image icon;
@@ -34,8 +34,13 @@ public class InventorySlotUI : MonoBehaviour, IPointerDownHandler, IPointerClick
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (controller == null) return;
+        if (controller == null || eventData.dragging) return;
         if (eventData.button == PointerEventData.InputButton.Left) controller.SelectSlot(index);
         else if (eventData.button == PointerEventData.InputButton.Right) controller.ShowContextMenu(index, eventData.position);
     }
+
+    public void OnBeginDrag(PointerEventData data) => controller?.DragAndDrop?.BeginInventoryDrag(index, gameObject, data);
+    public void OnDrag(PointerEventData data) => controller?.DragAndDrop?.Drag(gameObject, data);
+    public void OnEndDrag(PointerEventData data) => controller?.DragAndDrop?.EndDrag(gameObject, data);
+    private void OnDisable() => controller?.DragAndDrop?.CancelDragFrom(gameObject);
 }

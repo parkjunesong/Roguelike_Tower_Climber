@@ -7,6 +7,32 @@ public class UnitEquipment : MonoBehaviour
     public const int SlotCount = 5;
     private readonly ItemInstance[] slots = new ItemInstance[SlotCount];
     public event Action Changed;
+    public bool IsClassLocked { get; private set; }
+    private UnitClass explorationClass;
+    public UnitClass Class => IsClassLocked ? explorationClass : slots[0]?.Definition.WeaponClass ?? UnitClass.None;
+
+    public bool TryLockExplorationClass(out string message)
+    {
+        message = "";
+        if (IsClassLocked) return true;
+        if (Class == UnitClass.None)
+        {
+            message = "탐사 진입 전에 클래스가 지정된 무기를 장착하세요.";
+            return false;
+        }
+        explorationClass = Class;
+        IsClassLocked = true;
+        Changed?.Invoke();
+        return true;
+    }
+
+    public void ReleaseExplorationClass()
+    {
+        if (!IsClassLocked) return;
+        IsClassLocked = false;
+        explorationClass = UnitClass.None;
+        Changed?.Invoke();
+    }
 
     public ItemInstance GetItem(int index)
     {
@@ -52,6 +78,16 @@ public class UnitEquipment : MonoBehaviour
         if (source < 0 || target < 0)
         {
             message = "인벤토리에 있는 장비와 올바른 장착 부위를 확인하세요.";
+            return false;
+        }
+        if (target == 0 && item.Definition.WeaponClass == UnitClass.None)
+        {
+            message = "무기의 종류를 설정하세요.";
+            return false;
+        }
+        if (target == 0 && IsClassLocked && item.Definition.WeaponClass != explorationClass)
+        {
+            message = $"탐사 중에는 {UnitClassNames.GetName(explorationClass)} 클래스의 무기만 장착할 수 있습니다.";
             return false;
         }
         var previous = slots[target];

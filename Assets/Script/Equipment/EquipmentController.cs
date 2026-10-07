@@ -27,6 +27,7 @@ public class EquipmentController : MonoBehaviour
     [SerializeField] private Button dismissEquipTargetButton;
 
     public Unit SelectedUnit { get; private set; }
+    public CaveParallaxDemo.ExplorationItemDragAndDrop DragAndDrop { get; set; }
     private UnitEquipment equipment;
     private int selectedSlot = -1;
     private int unitIndex;
@@ -88,6 +89,7 @@ public class EquipmentController : MonoBehaviour
 
     public void EquipItem(ItemInstance item)
     {
+        if (DragAndDrop != null) return;
         if (inventoryController.Inventory.IndexOf(item) < 0) return;
         int slot = UnitEquipment.GetSlotIndex(item.Definition);
         if (slot < 0)
@@ -147,6 +149,7 @@ public class EquipmentController : MonoBehaviour
 
     public void ShowContextMenu(int index, Vector2 screenPosition)
     {
+        if (DragAndDrop != null) return;
         SelectSlot(index);
         if (selectedSlot < 0) return;
         unequipButton.interactable = inventoryController.Inventory.Count < inventoryController.Inventory.Capacity;
@@ -167,6 +170,12 @@ public class EquipmentController : MonoBehaviour
         CloseContextMenu();
         if (equipment == null) return;
         equipment.TryUnequip(selectedSlot, inventoryController.Inventory, out var message);
+        statusText.text = message;
+        inventoryController.SetStatus(message);
+    }
+
+    public void SetStatus(string message)
+    {
         statusText.text = message;
         inventoryController.SetStatus(message);
     }
@@ -199,10 +208,13 @@ public class EquipmentController : MonoBehaviour
         var item = selectedSlot < 0 ? null : equipment.GetItem(selectedSlot);
         if (item == null)
         {
-            detailText.text = "장비 좌클릭: 정보\n장비 우클릭: 장착 해제\n\n인벤토리에서 장착 → 캐릭터 선택\n같은 부위의 장비는 교체됩니다.";
+            detailText.text = DragAndDrop != null ? "장비 좌클릭: 정보\n장비를 창 밖으로 드래그하여 해제\n\n인벤토리 장비를 캐릭터 카드에 드롭하여 장착\n같은 부위의 장비는 교체됩니다." :
+                "장비 좌클릭: 정보\n장비 우클릭: 장착 해제\n\n인벤토리에서 장착 → 캐릭터 선택\n같은 부위의 장비는 교체됩니다.";
             return;
         }
         var text = new StringBuilder($"{item.DisplayName}\n종류: {item.ItemType}\n\n{item.Description}\n\n제공 능력치");
+        if (item.Definition.EquipmentType == EquipmentType.Weapon)
+            text.Insert(0, $"무기 클래스: {UnitClassNames.GetName(item.Definition.WeaponClass)}\n");
         bool hasStats = false;
         foreach (UnitStatType type in Enum.GetValues(typeof(UnitStatType)))
         {

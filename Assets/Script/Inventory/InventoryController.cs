@@ -26,6 +26,7 @@ public class InventoryController : MonoBehaviour
 
     public InventoryGrid Inventory { get; private set; }
     public ItemInstance SelectedItem { get; private set; }
+    public CaveParallaxDemo.ExplorationItemDragAndDrop DragAndDrop { get; set; }
     public event Action<ItemInstance> ItemUseRequested;
     public event Action<ItemInstance> ItemEquipRequested;
     public event Action<ItemInstance> ItemDiscarded;
@@ -73,6 +74,7 @@ public class InventoryController : MonoBehaviour
 
     public void ShowContextMenu(int index, Vector2 screenPosition)
     {
+        if (DragAndDrop != null) return;
         SelectSlot(index);
         if (SelectedItem == null) return;
         var action = SelectedItem.Definition.ActionType;
@@ -136,12 +138,15 @@ public class InventoryController : MonoBehaviour
         capacityText.text = $"{Inventory.Columns} × {Inventory.Rows}  |  보관 {Inventory.Count} / {Inventory.Capacity}";
         if (SelectedItem == null)
         {
-            detailText.text = "선택한 아이템 없음\n\n좌클릭: 아이템 정보\n우클릭: 사용 / 장착 / 버리기";
+            detailText.text = DragAndDrop != null ? "선택한 아이템 없음\n\n좌클릭: 아이템 정보\n장비를 캐릭터 카드에 드래그하여 장착" :
+                "선택한 아이템 없음\n\n좌클릭: 아이템 정보\n우클릭: 사용 / 장착 / 버리기";
             return;
         }
         var text = new StringBuilder($"{SelectedItem.DisplayName}\n종류: {SelectedItem.ItemType}");
         if (SelectedItem.Definition.ActionType == ItemActionType.Equip)
             text.Append($"\n장착 부위: {UnitEquipment.GetSlotName(UnitEquipment.GetSlotIndex(SelectedItem.Definition))}");
+        if (SelectedItem.Definition.EquipmentType == EquipmentType.Weapon)
+            text.Append($"\n무기 클래스: {UnitClassNames.GetName(SelectedItem.Definition.WeaponClass)}");
         text.Append($"\n\n{SelectedItem.Description}\n\n제공 능력치");
         bool hasStats = false;
         foreach (UnitStatType type in Enum.GetValues(typeof(UnitStatType)))
